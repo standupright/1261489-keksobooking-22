@@ -12,5 +12,4 @@ const getRandomCords = (min,max,floatingPoint) => {
 
   return (Math.random()*(max-min)+min).toFixed(floatingPoint);
 };
-
 getRandomCords(0,5,2);

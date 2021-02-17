@@ -1,2 +1,3 @@
 import {similarAdvertisements} from './data.js';
-similarAdvertisements;
+import './createSimilarAdvertisement.js';
+

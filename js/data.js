@@ -18,8 +18,8 @@ const OFFER_PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 
-const quantityFeatures = 5;
-const quantityPhotos = 3;
+const QUANTITY_FEATURES = 5;
+const QAUNTITY_PHOTOS = 3;
 
 const createUserNumber = () => '0' + Math.round (getRandomCords (1, 8, 0));
 
@@ -31,6 +31,9 @@ const createRandomLengthArr = ([...arr], maxLength) =>
     },
     () => arr.splice ((Math.random () * arr.length) | 0, 1)[0] );
 
+let xCordLocation = getRandomCords (35.65, 35.7, 5);
+let yCordLocation = getRandomCords (139.7, 139.8, 5);
+
 const createAdvertisement = () => {
   return {
     author: {
@@ -38,20 +41,20 @@ const createAdvertisement = () => {
     },
     offer: {
       title: 'Предлагаем Вам посетить следующий отель ',
-      addres: toString (location.x) + ', ' + toString (location.y),
+      addres: xCordLocation + ', ' + yCordLocation,
       price: 100,
       type: OFFER_TYPES[0],
       rooms: 2,
       guests: 5,
       checkin: OFFER_TIMES[0],
       checkout: OFFER_TIMES[0],
-      features: createRandomLengthArr (OFFER_FEATURES, quantityFeatures),
+      features: createRandomLengthArr (OFFER_FEATURES, QUANTITY_FEATURES),
       description: 'Уютные и удобные номера ждут вас в нашем отеле!',
-      photos: createRandomLengthArr (OFFER_PHOTOS, quantityPhotos),
+      photos: createRandomLengthArr (OFFER_PHOTOS, QAUNTITY_PHOTOS),
     },
     location: {
-      x: getRandomCords (35.65, 35.7, 5),
-      y: getRandomCords (139.7, 139.8, 5),
+      x: xCordLocation,
+      y: yCordLocation,
     },
   };
 };

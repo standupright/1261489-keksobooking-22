@@ -1,10 +1,12 @@
-import { similarAdvertisements } from './data.js';
+import {
+  similarAdvertisements
+} from './data.js';
 
 const cardTemplate = document.querySelector('#card');
 
 const similarListFragment = document.createDocumentFragment();
 
-similarAdvertisements.forEach(({ author, offer }) => {
+similarAdvertisements.forEach(({author,offer}) => {
   const advertisement = cardTemplate.cloneNode(true).content;
   advertisement.querySelector('.popup__title').textContent = offer.title;
   advertisement.querySelector('.popup__text--address').textContent =
@@ -20,8 +22,8 @@ similarAdvertisements.forEach(({ author, offer }) => {
 
   Object.keys(TYPE_NAMES).forEach((value) => {
     if (offer.type === value) {
-      advertisement.querySelector('.popup__type').textContent = TYPE_NAMES[`${value}`];     
-    }    
+      advertisement.querySelector('.popup__type').textContent = TYPE_NAMES[`${value}`];
+    }
   });
 
   advertisement.querySelector('.popup__text--capacity').textContent =
@@ -48,16 +50,23 @@ similarAdvertisements.forEach(({ author, offer }) => {
     return element;
   };
 
-  offer.features.forEach(value => { createElementInList(value, popupFeatures); });
+  offer.features.forEach(value => {
+    createElementInList(value, popupFeatures);
+  });
 
   advertisement.querySelector('.popup__description').textContent =
     offer.description;
   advertisement.querySelector('.popup__photos').textContent = offer.photos;
   advertisement.querySelector('.popup__avatar').textContent = author.avatar;
   similarListFragment.appendChild(advertisement);
-
 });
 
-//отрисовка
-const map = document.querySelector('.map__canvas');
-map.appendChild(similarListFragment);
+const createSimilarAdvertisement = () => {
+  for (let i = 0; i < similarListFragment.children.length; i++){
+    return similarListFragment.children[i];
+  }
+};
+
+export {
+  createSimilarAdvertisement
+}

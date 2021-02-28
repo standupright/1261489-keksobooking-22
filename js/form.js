@@ -1,6 +1,6 @@
 import {
-  initiateMap, cords
-} from './map.js';
+  initiateMap
+} from './main.js';
 
 const filtersMap = document.querySelector('.map__filters');
 const mapFeautures = filtersMap.querySelector('.map__features');
@@ -39,10 +39,8 @@ if (initiateMap) {
   }
 }
 
-
-// Вывод адреса
-address.setAttribute('readonly',true);
-address.value = cords.x + ', ' + cords.y;
+address.setAttribute('readonly', true);
+address.value = '35.68170' + ', ' + '139.75388';
 
 const TYPE_PRICES = {
   'flat': 1000,
@@ -66,3 +64,7 @@ const onTimeClick = function (changeOut) {
 
 timein.addEventListener('change', onTimeClick(timeout));
 timeout.addEventListener('change', onTimeClick(timein));
+
+export {
+  address
+}

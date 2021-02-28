@@ -1,6 +1,11 @@
+import { sendData } from './api.js';
 import {
   initiateMap
 } from './main.js';
+
+import {
+  showAlertSuccess,showAlertError,isEscEvent
+} from './util.js';
 
 const filtersMap = document.querySelector('.map__filters');
 const mapFeautures = filtersMap.querySelector('.map__features');
@@ -139,6 +144,19 @@ const onRoomNumberChange = function(){
 
 capacity.addEventListener('change',onRoomNumberChange);
 
+const setFormSubmit = (onSuccess) => {
+  informForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const formData = new FormData(evt.target);
+    sendData(
+      () => onSuccess(),
+      new FormData(evt.target),
+    )
+  });
+}
+
+
 export {
-  address
+  address,
+  setFormSubmit
 }

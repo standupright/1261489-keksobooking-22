@@ -1,13 +1,5 @@
-import {
-  similarAdvertisements
-} from './data.js';
-
-import {
-  createSimilarAdvertisement
-} from './createSimilarAdvertisement.js';
-
-import {
-  address
+ import {
+   advertisements,address
 } from './main.js';
 
 let initiateMap = false;
@@ -54,7 +46,7 @@ const onMainPinMarkerMove = mainPinMarker.on('moveend', (evt) => {
   address.value = cords.x + ', ' + cords.y;
 });
 
-similarAdvertisements.forEach(({
+advertisements.forEach(({
   location
 }) => {
   const regularIcon = L.icon({
@@ -72,7 +64,7 @@ similarAdvertisements.forEach(({
 
   regularPinMarker
     .addTo(map)
-    .bindPopup(createSimilarAdvertisement(), {
+    .bindPopup(renderSimilarAdvertisements(), {
       keepInView: true,
     }, )
 });

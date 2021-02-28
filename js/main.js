@@ -1,6 +1,21 @@
-import './data.js';
-import './createSimilarAdvertisement.js';
-import {initiateMap} from './map.js';
-import {address} from './form.js';
+import {
+  renderSimilarAdvertisements
+} from './createSimilarAdvertisement.js';
 
-export {initiateMap,address}
+import {
+  getData
+} from './api.js';
+
+
+ const advertisements = getData((similarAdvertisements) => {
+  renderSimilarAdvertisements(similarAdvertisements);
+   console.log(renderSimilarAdvertisements(similarAdvertisements))
+ });
+
+ console.log(advertisements)
+
+// import {initiateMap} from './map.js';
+// import {address, setFormSubmit} from './form.js';
+
+
+//export {initiateMap,address,setFormSubmit,advertisements}

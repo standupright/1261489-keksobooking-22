@@ -1,3 +1,6 @@
+const alertSuccessTemplate = document.querySelector('#success');
+const alertErrorTemplate = document.querySelector('#error');
+
 const getRandomCords = (min, max, floatingPoint) => {
   if (min < 0 || max < 0) {
     return 0;
@@ -13,4 +16,28 @@ const getRandomCords = (min, max, floatingPoint) => {
   return (Math.random () * (max - min) + min).toFixed (floatingPoint);
 };
 
-export {getRandomCords};
+const isEscEvent = (evt) => {
+  return evt.key === 'Escape' || evt.key === 'Esc';
+};
+
+const ALERT_SHOW_TIME = 5000;
+
+const showAlertSuccess = () => {
+  const alertSuccess = alertSuccessTemplate.cloneNode(true).content;
+  document.body.append(alertSuccess);
+
+  setTimeout(()=>{
+    alertSuccess.remove()
+  }, ALERT_SHOW_TIME);
+}
+
+const showAlertError = (message) => {
+  const alertEror= alertErrorTemplate.cloneNode(true).content;
+  document.body.append(alertEror);
+
+  setTimeout(()=>{
+    alertEror.remove()
+  }, ALERT_SHOW_TIME);
+}
+
+export {getRandomCords, showAlertSuccess,showAlertError,isEscEvent};

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const getRandomCoords = (min, max, numberOfSigns) => {
   if (min < 0 || max < 0) {
     return 0;
@@ -14,3 +15,8 @@ const getRandomCoords = (min, max, numberOfSigns) => {
   }
   return coords;
 };
+=======
+import './data.js';
+import './createSimilarAdvertisement.js';
+import './form.js';
+>>>>>>> 657ed96595259b37a1231872aea64625088cda02

@@ -9,15 +9,22 @@ const filtersMap = document.querySelector('.map__filters');
 const mapFeautures = filtersMap.querySelector('.map__features');
 const mapFilters = filtersMap.querySelectorAll('.map__filter');
 const housingType = filtersMap.querySelector('#housing-type');
+const housingPrice = filtersMap.querySelector('#housing-price');
+const housingRooms = filtersMap.querySelector('#housing-rooms');
+const housingGuests = filtersMap.querySelector('#housing-guests');
+const mapCheckboxes = document.querySelector('.map__checkbox');
+const informForm = document.querySelector('.ad-form');
+const title = document.querySelector('#title');
+const address = document.querySelector('#address');
 const price = document.querySelector('#price');
+const type = document.querySelector('#type');
 const timein = document.querySelector('#timein');
 const timeout = document.querySelector('#timeout');
-const informForm = document.querySelector('.ad-form');
-const informFieldsets = informForm.querySelectorAll('fieldset');
-const address = document.querySelector('#address');
-const title = document.querySelector('#title');
 const roomNumber = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
+const featureCheckboxes = document.querySelectorAll('.feature__checkbox')
+const informFieldsets = informForm.querySelectorAll('fieldset');
+const description = document.querySelector('#description');
 const resetButton = document.querySelector('.ad-form__reset');
 
 // Неактивное состояние
@@ -139,8 +146,26 @@ const onRoomNumberChange = function () {
 
 capacity.addEventListener('change', onRoomNumberChange);
 
-const onResetButtonClick = () => {
+const onResetButtonClick = (evt) => {
+  evt.preventDefault();
+  housingType.value = 'any';
+  housingPrice.value = 'any';
+  housingRooms.value = 'any';
+  housingGuests.value = 'any';
   title.value = '';
+  address.value = '35.68170' + ', ' + '139.75388';
+  type.value = 'flat';
+  price.value = '';
+  timein.value = '12:00';
+  timeout.value = '12:00';
+  roomNumber.value = '1';
+  capacity.value = '3';  
+  description.value = '';
+  for (let i=0; i< featureCheckboxes.length; i++) {
+    featureCheckboxes[i].checked = false;
+    mapCheckboxes[i].checked = false;
+  }
+
   mainPinMarker.setLatLng({lat: 35.68170, lng: 139.75388});
 };
 
@@ -150,7 +175,7 @@ const setFormSubmit = () => {
   informForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const formData = new FormData(evt.target);
-    sendData(onResetButtonClick(),formData)
+    sendData(() => onResetButtonClick(),() => formData)
   });
 }
 

@@ -3,6 +3,7 @@ import {
 } from './main.js';
 
 let initiateMap = false;
+
 const map = L.map('map-canvas')
   .on('load', () => {
     initiateMap = true;
@@ -29,7 +30,7 @@ const START_CORDS = {
   y: 139.75388,
 };
 
-let mainPinMarker = L.marker({
+const mainPinMarker = L.marker({
   lat: START_CORDS.x,
   lng: START_CORDS.y,
 }, {

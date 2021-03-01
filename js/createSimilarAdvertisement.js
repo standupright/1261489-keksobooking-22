@@ -1,5 +1,7 @@
 const cardTemplate = document.querySelector('#card');
 
+const popups = [];
+
 
 const renderSimilarAdvertisements = (similarAdvertisements) => {
   const similarListFragment = document.createDocumentFragment();
@@ -56,19 +58,16 @@ const renderSimilarAdvertisements = (similarAdvertisements) => {
     advertisement.querySelector('.popup__photos').textContent = offer.photos;
     advertisement.querySelector('.popup__avatar').textContent = author.avatar;
     similarListFragment.appendChild(advertisement);
-
   });
 
-  //  const createSimilarAdvertisement = () => {
-  //   for (let i = 0; i < similarListFragment.children.length; i++){
-  //      return similarListFragment.children[i];
-  //    }
-  //  };
+  for (let i = 0; i < similarListFragment.children.length; i++){
+    popups[i] = similarListFragment.children[i];
+  }
 
-   return similarListFragment;
+  return popups;
 };
 
 
 export {
-  renderSimilarAdvertisements
+  renderSimilarAdvertisements,popups
 }

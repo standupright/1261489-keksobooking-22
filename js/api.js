@@ -6,7 +6,6 @@ const getData = (onSuccess) => {
     .then((similarAdvertisements) => {
       onSuccess(similarAdvertisements);
     })
-    .then((fragment)=>{return fragment})
 };
 
 const sendData = (onSuccess, body) => {

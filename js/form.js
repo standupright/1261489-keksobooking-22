@@ -1,11 +1,9 @@
-import { sendData } from './api.js';
 import {
-  initiateMap
+  sendData
+} from './api.js';
+import {
+  initiateMap,mainPinMarker
 } from './main.js';
-
-import {
-  showAlertSuccess,showAlertError,isEscEvent
-} from './util.js';
 
 const filtersMap = document.querySelector('.map__filters');
 const mapFeautures = filtersMap.querySelector('.map__features');
@@ -20,6 +18,7 @@ const address = document.querySelector('#address');
 const title = document.querySelector('#title');
 const roomNumber = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
+const resetButton = document.querySelector('.ad-form__reset');
 
 // Неактивное состояние
 informForm.classList.add('ad-form--disabled');
@@ -90,9 +89,9 @@ title.addEventListener('input', () => {
   const valueLength = title.value.length;
 
   if (valueLength < MIN_NAME_LENGTH) {
-    title.setCustomValidity('Ещё ' + (MIN_NAME_LENGTH - valueLength) +' симв.');
+    title.setCustomValidity('Ещё ' + (MIN_NAME_LENGTH - valueLength) + ' симв.');
   } else if (valueLength > MAX_NAME_LENGTH) {
-    title.setCustomValidity('Удалите лишние ' + (valueLength - MAX_NAME_LENGTH) +' симв.');
+    title.setCustomValidity('Удалите лишние ' + (valueLength - MAX_NAME_LENGTH) + ' симв.');
   } else {
     title.setCustomValidity('');
   }
@@ -113,48 +112,47 @@ const MAX_PRICE = 1000000;
 price.addEventListener('input', () => {
   let value = price.value
 
-  if ( value >= MAX_PRICE) {
-    console.log('yes')
+  if (value >= MAX_PRICE) {
     price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
-  } else if ( value === 0)
-  {
+  } else if (value === 0) {
     price.setCustomValidity('Цена не может равняться 0');
-  }
-  else {
-    console.log('no')
+  } else {
     price.setCustomValidity('');
   }
   price.reportValidity();
 });
 
-const onRoomNumberChange = function(){
-    if (this.value == 0 && roomNumber.value != 100) {
-      this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 100 комнатах')
-    } else if (this.value == 1 && roomNumber.value == 100) {
-      this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 1, 2 или 3 комнате')
-    } else if (this.value == 2 && (roomNumber.value == 1 || roomNumber.value == 100)) {
-      this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 2 или 3 комнатах')
-    } else if (this.value == 3 && roomNumber.value != 3) {
-      this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 3 комнатах')
-    } else {
-      this.setCustomValidity('')
-    }
+const onRoomNumberChange = function () {
+  if (this.value == 0 && roomNumber.value != 100) {
+    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 100 комнатах')
+  } else if (this.value == 1 && roomNumber.value == 100) {
+    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 1, 2 или 3 комнате')
+  } else if (this.value == 2 && (roomNumber.value == 1 || roomNumber.value == 100)) {
+    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 2 или 3 комнатах')
+  } else if (this.value == 3 && roomNumber.value != 3) {
+    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 3 комнатах')
+  } else {
+    this.setCustomValidity('')
+  }
   this.reportValidity();
 };
 
-capacity.addEventListener('change',onRoomNumberChange);
+capacity.addEventListener('change', onRoomNumberChange);
 
-const setFormSubmit = (onSuccess) => {
+const onResetButtonClick = () => {
+  title.value = '';
+  mainPinMarker.setLatLng({lat: 35.68170, lng: 139.75388});
+};
+
+resetButton.addEventListener('click', onResetButtonClick);
+
+const setFormSubmit = () => {
   informForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const formData = new FormData(evt.target);
-    sendData(
-      () => onSuccess(),
-      new FormData(evt.target),
-    )
+    sendData(onResetButtonClick(),formData)
   });
 }
-
 
 export {
   address,

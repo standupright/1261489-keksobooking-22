@@ -1,5 +1,5 @@
- import {
-   advertisements,address
+import {
+  popups,address
 } from './main.js';
 
 let initiateMap = false;
@@ -10,7 +10,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: 35.681700,
     lng: 139.753882,
-  }, 13);
+  }, 9);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -24,9 +24,14 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const mainPinMarker = L.marker({
-  lat: 35.681700,
-  lng: 139.753882,
+const START_CORDS = {
+  x: 35.68170,
+  y: 139.75388,
+};
+
+let mainPinMarker = L.marker({
+  lat: START_CORDS.x,
+  lng: START_CORDS.y,
 }, {
   draggable: true,
   icon: mainPinIcon,
@@ -34,42 +39,51 @@ const mainPinMarker = L.marker({
 
 mainPinMarker.addTo(map);
 
-let cords = {
-  x: 35.68170,
-  y: 139.75388,
-};
+const setAddress = (markerName) => {
+  let pinCords = markerName.getLatLng();
+  address.value = (pinCords.lat).toFixed(5) + ', ' + (pinCords.lng).toFixed(5);
+}
 
-const onMainPinMarkerMove = mainPinMarker.on('moveend', (evt) => {
-  let pinCords = evt.target.getLatLng();
-  cords.x = (pinCords.lat).toFixed(5);
-  cords.y = (pinCords.lng).toFixed(5);
-  address.value = cords.x + ', ' + cords.y;
+mainPinMarker.on('moveend', (evt) => {
+  setAddress(evt.target);
 });
 
-advertisements.forEach(({
-  location
-}) => {
-  const regularIcon = L.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+let counter = 0;
+let choosedAdvertisement;
+const chooseAdvertisement = (renderedAdvertisements) => {
+  choosedAdvertisement = renderedAdvertisements[counter];
+  counter++;
+  if (counter>renderedAdvertisements.length) { counter=0; } 
+
+  return choosedAdvertisement;
+}
+
+const renderAdvertisementsOnMap = (similarAdvertisements) => {
+  similarAdvertisements.forEach(({location}) => {
+    const regularIcon = L.icon({
+      iconUrl: 'img/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
+  
+    const regularPinMarker = L.marker({
+      lat: location.lat,
+      lng: location.lng,
+    }, {
+      icon: regularIcon,
+    }, 
+    );
+  
+    regularPinMarker
+      .addTo(map)
+      .bindPopup(chooseAdvertisement(popups), {
+        keepInView: true,
+      }, 
+      )
   });
-
-  const regularPinMarker = L.marker({
-    lat: location.x,
-    lng: location.y,
-  }, {
-    icon: regularIcon,
-  }, );
-
-  regularPinMarker
-    .addTo(map)
-    .bindPopup(renderSimilarAdvertisements(), {
-      keepInView: true,
-    }, )
-});
+}
 
 
 export {
-  initiateMap
+  initiateMap,renderAdvertisementsOnMap,mainPinMarker
 }

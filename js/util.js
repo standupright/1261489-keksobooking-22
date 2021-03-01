@@ -8,7 +8,7 @@ const isEscEvent = (evt) => {
 
 const ALERT_SHOW_TIME = 5000;
 
-const showMessageErrorAlert = () => {
+const showMessageErrorAlert = (error) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
   alertContainer.style.position = 'absolute';
@@ -20,36 +20,36 @@ const showMessageErrorAlert = () => {
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'white';
   alertContainer.style.width = 200;
-  
-  
+  alertContainer.style.height = 200;
+
   alertContainer.textContent = 'Произошла ошибка при загрузке данных с сервера :( Обновите страницу!';
-  
+
   document.body.append(alertContainer);
 
-  setTimeout(()=>{
+  setTimeout(() => {
     alertContainer.remove()
   }, ALERT_SHOW_TIME);
 }
 
 const onAlertKeydown = (container) => {
-  return (evt)=>{
+  return (evt) => {
     if (isEscEvent(evt)) {
       evt.preventDefault();
       closeAlert(container);
     }
-  } 
+  }
 }
 
 const onWindowsClick = (container) => {
-  return (evt)=>{
+  return (evt) => {
     evt.preventDefault();
     closeAlert(container);
-  } 
+  }
 }
 
 const closeAlert = (container) => {
   container.remove();
-  document.removeEventListener('keypress',onAlertKeydown(container))
+  document.removeEventListener('keypress', onAlertKeydown(container))
   document.addEventListener('click', onWindowsClick(container));
 }
 
@@ -73,4 +73,9 @@ const showAlertError = () => {
   document.addEventListener('click', onWindowsClick(alertContainer));
 }
 
-export {showMessageErrorAlert, showAlertSuccess,showAlertError,isEscEvent};
+export {
+  showMessageErrorAlert,
+  showAlertSuccess,
+  showAlertError,
+  isEscEvent
+};

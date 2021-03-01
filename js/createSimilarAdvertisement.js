@@ -2,10 +2,12 @@ const cardTemplate = document.querySelector('#card');
 
 const popups = [];
 
-
 const renderSimilarAdvertisements = (similarAdvertisements) => {
   const similarListFragment = document.createDocumentFragment();
-  similarAdvertisements.forEach(({author,offer}) => {
+  similarAdvertisements.forEach(({
+    author,
+    offer
+  }) => {
     const advertisement = cardTemplate.cloneNode(true).content;
     advertisement.querySelector('.popup__title').textContent = offer.title;
     advertisement.querySelector('.popup__text--address').textContent =
@@ -31,15 +33,12 @@ const renderSimilarAdvertisements = (similarAdvertisements) => {
     advertisement.querySelector('.popup__text--time').textContent =
       'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
 
-    // Создание списка дополнительных потребностей
-
     const popupFeatures = advertisement.querySelector('.popup__features');
 
     while (popupFeatures.firstChild) {
       popupFeatures.removeChild(popupFeatures.firstChild);
     }
 
-    // Функция для создания дочернего элемента li в списке с возвратом элемента li
     const createElementInList = (nameChild, nameParent) => {
       const element = document.createElement('li');
       element.classList.add('.popup__feature');
@@ -60,14 +59,14 @@ const renderSimilarAdvertisements = (similarAdvertisements) => {
     similarListFragment.appendChild(advertisement);
   });
 
-  for (let i = 0; i < similarListFragment.children.length; i++){
+  for (let i = 0; i < similarListFragment.children.length; i++) {
     popups[i] = similarListFragment.children[i];
   }
 
   return popups;
 };
 
-
 export {
-  renderSimilarAdvertisements,popups
+  renderSimilarAdvertisements,
+  popups
 }

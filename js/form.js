@@ -1,9 +1,22 @@
 import {
   sendData
 } from './api.js';
+
 import {
-  initiateMap,mainPinMarker
+  initiateMap,
+  mainPinMarker
 } from './main.js';
+
+const TYPE_PRICES = {
+  'flat': 1000,
+  'bungalow': 0,
+  'house': 5000,
+  'palace': 10000,
+}
+
+const MIN_NAME_LENGTH = 30;
+const MAX_NAME_LENGTH = 100;
+const MAX_PRICE = 1000000;
 
 const filtersMap = document.querySelector('.map__filters');
 const mapFeautures = filtersMap.querySelector('.map__features');
@@ -56,13 +69,6 @@ if (initiateMap) {
 address.setAttribute('readonly', true);
 address.value = '35.68170' + ', ' + '139.75388';
 
-const TYPE_PRICES = {
-  'flat': 1000,
-  'bungalow': 0,
-  'house': 5000,
-  'palace': 10000,
-}
-
 const onHousingTypeChange = function () {
   price.min = TYPE_PRICES[`${this.value}`];
   price.placeholder = TYPE_PRICES[`${this.value}`];
@@ -79,11 +85,6 @@ const onTimeChange = function (changeOut) {
 timein.addEventListener('change', onTimeChange(timeout));
 timeout.addEventListener('change', onTimeChange(timein));
 
-// Валидация
-
-const MIN_NAME_LENGTH = 30;
-const MAX_NAME_LENGTH = 100;
-
 title.addEventListener('invalid', () => {
   if (title.validity.valueMissing) {
     title.setCustomValidity('Обязательное поле');
@@ -94,7 +95,6 @@ title.addEventListener('invalid', () => {
 
 title.addEventListener('input', () => {
   const valueLength = title.value.length;
-
   if (valueLength < MIN_NAME_LENGTH) {
     title.setCustomValidity('Ещё ' + (MIN_NAME_LENGTH - valueLength) + ' симв.');
   } else if (valueLength > MAX_NAME_LENGTH) {
@@ -105,7 +105,6 @@ title.addEventListener('input', () => {
   title.reportValidity();
 });
 
-
 price.addEventListener('invalid', () => {
   if (price.validity.valueMissing) {
     price.setCustomValidity('Обязательное поле');
@@ -114,11 +113,8 @@ price.addEventListener('invalid', () => {
   }
 });
 
-const MAX_PRICE = 1000000;
-
 price.addEventListener('input', () => {
   let value = price.value
-
   if (value >= MAX_PRICE) {
     price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
   } else if (value === 0) {
@@ -130,13 +126,13 @@ price.addEventListener('input', () => {
 });
 
 const onRoomNumberChange = function () {
-  if (this.value == 0 && roomNumber.value != 100) {
+  if (this.value === '0' && roomNumber.value !== '100') {
     this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 100 комнатах')
-  } else if (this.value == 1 && roomNumber.value == 100) {
+  } else if (this.value === '1' && roomNumber.value === '100') {
     this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 1, 2 или 3 комнате')
-  } else if (this.value == 2 && (roomNumber.value == 1 || roomNumber.value == 100)) {
+  } else if (this.value === '2' && (roomNumber.value === '1' || roomNumber.value === '100')) {
     this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 2 или 3 комнатах')
-  } else if (this.value == 3 && roomNumber.value != 3) {
+  } else if (this.value === '3' && roomNumber.value !== '3') {
     this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 3 комнатах')
   } else {
     this.setCustomValidity('')
@@ -159,14 +155,18 @@ const onResetButtonClick = (evt) => {
   timein.value = '12:00';
   timeout.value = '12:00';
   roomNumber.value = '1';
-  capacity.value = '3';  
+  capacity.value = '3';
   description.value = '';
-  for (let i=0; i< featureCheckboxes.length; i++) {
+
+  for (let i = 0; i < featureCheckboxes.length; i++) {
     featureCheckboxes[i].checked = false;
     mapCheckboxes[i].checked = false;
   }
 
-  mainPinMarker.setLatLng({lat: 35.68170, lng: 139.75388});
+  mainPinMarker.setLatLng({
+    lat: 35.68170,
+    lng: 139.75388
+  });
 };
 
 resetButton.addEventListener('click', onResetButtonClick);
@@ -175,7 +175,7 @@ const setFormSubmit = () => {
   informForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const formData = new FormData(evt.target);
-    sendData(() => onResetButtonClick(),() => formData)
+    sendData(() => onResetButtonClick(), () => formData)
   });
 }
 

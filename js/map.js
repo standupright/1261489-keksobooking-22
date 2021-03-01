@@ -1,5 +1,6 @@
 import {
-  popups,address
+  popups,
+  address
 } from './main.js';
 
 let initiateMap = false;
@@ -54,37 +55,40 @@ let choosedAdvertisement;
 const chooseAdvertisement = (renderedAdvertisements) => {
   choosedAdvertisement = renderedAdvertisements[counter];
   counter++;
-  if (counter>renderedAdvertisements.length) { counter=0; } 
+  if (counter > renderedAdvertisements.length) {
+    counter = 0;
+  }
 
   return choosedAdvertisement;
 }
 
 const renderAdvertisementsOnMap = (similarAdvertisements) => {
-  similarAdvertisements.forEach(({location}) => {
+  similarAdvertisements.forEach(({
+    location
+  }) => {
     const regularIcon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],
       iconAnchor: [20, 40],
     });
-  
+
     const regularPinMarker = L.marker({
       lat: location.lat,
       lng: location.lng,
     }, {
       icon: regularIcon,
-    }, 
-    );
-  
+    }, );
+
     regularPinMarker
       .addTo(map)
       .bindPopup(chooseAdvertisement(popups), {
         keepInView: true,
-      }, 
-      )
+      }, )
   });
 }
 
-
 export {
-  initiateMap,renderAdvertisementsOnMap,mainPinMarker
+  initiateMap,
+  renderAdvertisementsOnMap,
+  mainPinMarker
 }

@@ -1,13 +1,21 @@
 import {
-  renderSimilarAdvertisements,popups
+  renderSimilarAdvertisements,
+  popups
 } from './createSimilarAdvertisement.js';
 
 import {
   getData
 } from './api.js';
 
-import {initiateMap,renderAdvertisementsOnMap,mainPinMarker} from './map.js';
-import {address, setFormSubmit} from './form.js';
+import {
+  initiateMap,
+  renderAdvertisementsOnMap,
+  mainPinMarker
+} from './map.js';
+import {
+  address,
+  setFormSubmit
+} from './form.js';
 
 getData((similarAdvertisements) => {
   renderSimilarAdvertisements(similarAdvertisements);
@@ -16,4 +24,9 @@ getData((similarAdvertisements) => {
 
 setFormSubmit();
 
-export {initiateMap,address,popups,mainPinMarker}
+export {
+  initiateMap,
+  address,
+  popups,
+  mainPinMarker
+}

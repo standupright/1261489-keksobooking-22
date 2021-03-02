@@ -1,13 +1,15 @@
 import {
   popups,
-  address
+  address,
+  deactivateForm,
+  activateForm
 } from './main.js';
 
-let initiateMap = false;
+deactivateForm();
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    initiateMap = true;
+    activateForm();
   })
   .setView({
     lat: 35.681700,
@@ -88,7 +90,6 @@ const renderAdvertisementsOnMap = (similarAdvertisements) => {
 }
 
 export {
-  initiateMap,
   renderAdvertisementsOnMap,
   mainPinMarker
 }

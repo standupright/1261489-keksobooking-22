@@ -8,25 +8,32 @@ import {
 } from './api.js';
 
 import {
-  initiateMap,
-  renderAdvertisementsOnMap,
-  mainPinMarker
-} from './map.js';
-import {
   address,
+  deactivateForm,
+  activateForm,
   setFormSubmit
 } from './form.js';
 
+import {
+  renderAdvertisementsOnMap,
+  mainPinMarker
+} from './map.js';
+
+
+
+const SIMILAR_ADVERTISEMENTS_QUANTITY = 10;
+
 getData((similarAdvertisements) => {
-  renderSimilarAdvertisements(similarAdvertisements);
-  renderAdvertisementsOnMap(similarAdvertisements);
+  renderSimilarAdvertisements(similarAdvertisements.slice(0,SIMILAR_ADVERTISEMENTS_QUANTITY));
+  renderAdvertisementsOnMap(similarAdvertisements.slice(0,SIMILAR_ADVERTISEMENTS_QUANTITY));
 });
 
 setFormSubmit();
 
 export {
-  initiateMap,
   address,
+  deactivateForm,
+  activateForm,
   popups,
   mainPinMarker
 }

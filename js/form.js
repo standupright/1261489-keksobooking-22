@@ -3,7 +3,6 @@ import {
 } from './api.js';
 
 import {
-  initiateMap,
   mainPinMarker
 } from './main.js';
 
@@ -41,19 +40,20 @@ const description = document.querySelector('#description');
 const resetButton = document.querySelector('.ad-form__reset');
 
 // Неактивное состояние
-informForm.classList.add('ad-form--disabled');
-for (let i = 0; i < informFieldsets.length; i++) {
-  informFieldsets[i].disabled = true;
+const deactivateForm = () => {
+  informForm.classList.add('ad-form--disabled');
+  for (let i = 0; i < informFieldsets.length; i++) {
+    informFieldsets[i].disabled = true;
+  }
+
+  filtersMap.classList.add('ad-form--disabled');
+  mapFeautures.disabled = true;
+  for (let i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].disabled = true;
+  }
 }
 
-filtersMap.classList.add('ad-form--disabled');
-mapFeautures.disabled = true;
-for (let i = 0; i < mapFilters.length; i++) {
-  mapFilters[i].disabled = true;
-}
-
-// Активное состояние
-if (initiateMap) {
+const activateForm = () => {
   informForm.classList.remove('ad-form--disabled');
   for (let i = 0; i < informFieldsets.length; i++) {
     informFieldsets[i].disabled = false;
@@ -65,6 +65,8 @@ if (initiateMap) {
     mapFilters[i].disabled = false;
   }
 }
+
+
 
 address.setAttribute('readonly', true);
 address.value = '35.68170' + ', ' + '139.75388';
@@ -181,5 +183,7 @@ const setFormSubmit = () => {
 
 export {
   address,
+  deactivateForm,
+  activateForm,
   setFormSubmit
 }

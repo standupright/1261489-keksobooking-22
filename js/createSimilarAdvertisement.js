@@ -4,7 +4,9 @@ const popups = [];
 
 const renderSimilarAdvertisements = (similarAdvertisements) => {
   const similarListFragment = document.createDocumentFragment();
-  similarAdvertisements.forEach(({
+  similarAdvertisements
+  .slice()
+  .forEach(({
     author,
     offer
   }) => {

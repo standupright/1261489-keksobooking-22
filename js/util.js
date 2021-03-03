@@ -8,7 +8,7 @@ const isEscEvent = (evt) => {
 
 const ALERT_SHOW_TIME = 5000;
 
-const showMessageErrorAlert = (error) => {
+const showMessageErrorAlert = () => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
   alertContainer.style.position = 'absolute';

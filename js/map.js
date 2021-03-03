@@ -65,9 +65,8 @@ const chooseAdvertisement = (renderedAdvertisements) => {
 }
 
 const renderAdvertisementsOnMap = (similarAdvertisements) => {
-  similarAdvertisements.forEach(({
-    location
-  }) => {
+  similarAdvertisements.forEach(({location}) => 
+  {
     const regularIcon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],
@@ -79,13 +78,13 @@ const renderAdvertisementsOnMap = (similarAdvertisements) => {
       lng: location.lng,
     }, {
       icon: regularIcon,
-    }, );
+    });
 
     regularPinMarker
       .addTo(map)
       .bindPopup(chooseAdvertisement(popups), {
         keepInView: true,
-      }, )
+      })
   });
 }
 

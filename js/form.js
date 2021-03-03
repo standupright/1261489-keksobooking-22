@@ -167,7 +167,7 @@ const onResetButtonClick = (evt) => {
 
   mainPinMarker.setLatLng({
     lat: 35.68170,
-    lng: 139.75388
+    lng: 139.75388,
   });
 };
 

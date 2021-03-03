@@ -15,9 +15,9 @@ const getData = (onSuccess) => {
 
 const sendData = (onSuccess, body) => {
   fetch('https://22.javascript.pages.academy/keksobooking', {
-      method: 'POST',
-      body,
-    })
+    method: 'POST',
+    body,
+  })
     .then((response) => {
       if (response.ok) {
         showAlertSuccess();

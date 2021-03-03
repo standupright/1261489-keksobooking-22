@@ -11,6 +11,8 @@ import {
   address,
   deactivateForm,
   activateForm,
+  activateFilters,
+  onFiltersEvents,
   setFormSubmit
 } from './form.js';
 
@@ -19,14 +21,18 @@ import {
   mainPinMarker
 } from './map.js';
 
-
-
 const SIMILAR_ADVERTISEMENTS_QUANTITY = 10;
 
 getData((similarAdvertisements) => {
-  renderSimilarAdvertisements(similarAdvertisements.slice(0,SIMILAR_ADVERTISEMENTS_QUANTITY));
-  renderAdvertisementsOnMap(similarAdvertisements.slice(0,SIMILAR_ADVERTISEMENTS_QUANTITY));
-});
+  const advrts = similarAdvertisements.slice(0,SIMILAR_ADVERTISEMENTS_QUANTITY);
+  activateFilters();
+  renderSimilarAdvertisements(advrts);
+  renderAdvertisementsOnMap(advrts);
+  onFiltersEvents( () => {
+    renderSimilarAdvertisements(advrts);
+    renderAdvertisementsOnMap(advrts);
+  })
+}) 
 
 setFormSubmit();
 

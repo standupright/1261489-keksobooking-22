@@ -5,12 +5,17 @@ import {
 } from './util.js'
 
 const getData = (onSuccess) => {
-  fetch('https://22.javascript.pages.academy/keksobooking/data')
-    .then((response) => response.json())
-    .then((similarAdvertisements) => {
-      onSuccess(similarAdvertisements);
-    })
-    .catch(() => showMessageErrorAlert());
+  try {
+    fetch('https://22.javascript.pages.academy/keksobooking/data')
+      .then((response) => response.json())
+      .then((similarAdvertisements) => {
+        onSuccess(similarAdvertisements);
+      })
+      .catch(() => showMessageErrorAlert());
+  } catch (error) {
+    showMessageErrorAlert()
+  }
+
 };
 
 const sendData = (onSuccess, body) => {

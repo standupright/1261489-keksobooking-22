@@ -40,7 +40,6 @@ const informFieldsets = informForm.querySelectorAll('fieldset');
 const description = document.querySelector('#description');
 const resetButton = document.querySelector('.ad-form__reset');
 
-// Неактивное состояние
 const deactivateForm = () => {
   informForm.classList.add('ad-form--disabled');
   for (let i = 0; i < informFieldsets.length; i++) {
@@ -59,7 +58,9 @@ const activateForm = () => {
   for (let i = 0; i < informFieldsets.length; i++) {
     informFieldsets[i].disabled = false;
   }
+}
 
+const activateFilters = () => {
   filtersMap.classList.remove('ad-form--disabled');
   mapFeautures.disabled = false;
   for (let i = 0; i < mapFilters.length; i++) {
@@ -67,7 +68,12 @@ const activateForm = () => {
   }
 }
 
-
+const onFiltersEvents = (cb => {
+  housingType.addEventListener('change', cb());
+  housingPrice.addEventListener('change', cb());
+  housingRooms.addEventListener('change', cb());
+  housingGuests.addEventListener('change', cb());
+})
 
 address.setAttribute('readonly', true);
 address.value = '35.68170' + ', ' + '139.75388';
@@ -192,5 +198,7 @@ export {
   address,
   deactivateForm,
   activateForm,
+  activateFilters,
+  onFiltersEvents,
   setFormSubmit
 }

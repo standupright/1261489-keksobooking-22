@@ -1,8 +1,8 @@
 import {
   popups,
   address,
-  deactivateForm,
-  activateForm
+  activateForm,
+  deactivateForm
 } from './main.js';
 
 deactivateForm();

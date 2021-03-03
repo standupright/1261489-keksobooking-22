@@ -1,11 +1,29 @@
+import {renderAdvertisementsOnMap,removeMarkers} from './main.js'
+
 const cardTemplate = document.querySelector('#card');
 
 const popups = [];
 
-const renderSimilarAdvertisements = (similarAdvertisements) => {
+
+const sortAdvertisements = (advertisementsElement,newAdvrtsArray, value) => {
+  if (value === advertisementsElement.offer.type || value === 'any') {
+    newAdvrtsArray.push(advertisementsElement);
+  }
+
+  if (value === advertisementsElement.offer.price || value === 'any') {
+    
+    newAdvrtsArray.push(advertisementsElement);
+  }
+
+  return newAdvrtsArray;
+}
+
+const createSimilarAdvertisements = (similarAdvertisements,value='any') => {
+  const filteredAdvertisements = [];
   const similarListFragment = document.createDocumentFragment();
   similarAdvertisements
     .slice()
+    .sort((advertisementsElement) => sortAdvertisements(advertisementsElement,filteredAdvertisements,value))
     .forEach(({
       author,
       offer,
@@ -64,11 +82,13 @@ const renderSimilarAdvertisements = (similarAdvertisements) => {
   for (let i = 0; i < similarListFragment.children.length; i++) {
     popups[i] = similarListFragment.children[i];
   }
-
+  console.log(filteredAdvertisements)
+  removeMarkers()
+  renderAdvertisementsOnMap(filteredAdvertisements);
   return popups;
 };
 
 export {
-  renderSimilarAdvertisements,
+  createSimilarAdvertisements,
   popups
 }

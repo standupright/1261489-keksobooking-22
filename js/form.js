@@ -68,12 +68,36 @@ const activateFilters = () => {
   }
 }
 
-const onFiltersEvents = (cb => {
-  housingType.addEventListener('change', cb());
-  housingPrice.addEventListener('change', cb());
-  housingRooms.addEventListener('change', cb());
-  housingGuests.addEventListener('change', cb());
-})
+// filters events for map
+const hosingTypeEvent = (cb) => {
+  housingType.addEventListener('change', (evt) => 
+  {
+    cb(evt.target.value);
+  });
+};
+
+const housingPriceEvent = (cb) => {
+  housingPrice.addEventListener('change', (evt) => 
+  {
+    cb(evt.target.value);
+  });
+};
+
+const housingRoomsEvent = (cb) => {
+  housingRooms.addEventListener('change', (evt) => 
+  {
+    cb(evt.target.value);
+  });
+};
+
+const housingGuestsEvent = (cb) => {
+  housingPrice.addEventListener('change', (evt) => 
+  {
+    cb(evt.target.value);
+  });
+};
+
+// validation
 
 address.setAttribute('readonly', true);
 address.value = '35.68170' + ', ' + '139.75388';
@@ -199,6 +223,9 @@ export {
   deactivateForm,
   activateForm,
   activateFilters,
-  onFiltersEvents,
+  hosingTypeEvent,
+  housingPriceEvent,
+  housingRoomsEvent,
+  housingGuestsEvent,
   setFormSubmit
 }

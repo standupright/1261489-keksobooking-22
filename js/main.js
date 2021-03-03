@@ -1,5 +1,5 @@
 import {
-  renderSimilarAdvertisements,
+  createSimilarAdvertisements,
   popups
 } from './createSimilarAdvertisement.js';
 
@@ -12,12 +12,16 @@ import {
   deactivateForm,
   activateForm,
   activateFilters,
-  onFiltersEvents,
+  hosingTypeEvent,
+  housingPriceEvent,
+  housingRoomsEvent,
+  housingGuestsEvent,
   setFormSubmit
 } from './form.js';
 
 import {
   renderAdvertisementsOnMap,
+  removeMarkers,
   mainPinMarker
 } from './map.js';
 
@@ -26,11 +30,18 @@ const SIMILAR_ADVERTISEMENTS_QUANTITY = 10;
 getData((similarAdvertisements) => {
   const advrts = similarAdvertisements.slice(0,SIMILAR_ADVERTISEMENTS_QUANTITY);
   activateFilters();
-  renderSimilarAdvertisements(advrts);
-  renderAdvertisementsOnMap(advrts);
-  onFiltersEvents( () => {
-    renderSimilarAdvertisements(advrts);
-    renderAdvertisementsOnMap(advrts);
+  createSimilarAdvertisements(advrts);
+  hosingTypeEvent( (value) => {
+    createSimilarAdvertisements(advrts,value);
+  })
+  housingPriceEvent( (value) => {
+    createSimilarAdvertisements(advrts,value);
+  })
+  housingRoomsEvent( (value) => {
+    createSimilarAdvertisements(advrts,value);
+  })
+  housingGuestsEvent( (value) => {
+    createSimilarAdvertisements(advrts,value);
   })
 }) 
 
@@ -38,6 +49,8 @@ setFormSubmit();
 
 export {
   address,
+  removeMarkers,
+  renderAdvertisementsOnMap,
   deactivateForm,
   activateForm,
   popups,

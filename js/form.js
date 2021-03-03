@@ -16,6 +16,7 @@ const TYPE_PRICES = {
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
 const MAX_PRICE = 1000000;
+let minPrice = 5000;
 
 const filtersMap = document.querySelector('.map__filters');
 const mapFeautures = filtersMap.querySelector('.map__features');
@@ -71,12 +72,13 @@ const activateForm = () => {
 address.setAttribute('readonly', true);
 address.value = '35.68170' + ', ' + '139.75388';
 
-const onHousingTypeChange = function () {
-  price.min = TYPE_PRICES[`${this.value}`];
+const onTypeChange = function () {
+  minPrice = TYPE_PRICES[`${this.value}`];
+  price.min = minPrice;
   price.placeholder = TYPE_PRICES[`${this.value}`];
 };
 
-housingType.addEventListener('change', onHousingTypeChange);
+type.addEventListener('change', onTypeChange);
 
 const onTimeChange = function (changeOut) {
   return function () {
@@ -110,17 +112,22 @@ title.addEventListener('input', () => {
 price.addEventListener('invalid', () => {
   if (price.validity.valueMissing) {
     price.setCustomValidity('Обязательное поле');
-  } else {
+  } else if (price.validity.rangeOverflow) {
+    price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
+  } else if (price.validity.rangeUnderflow) {
+    price.setCustomValidity('Цена не может быть ниже ' + minPrice);
+  }
+  else {
     price.setCustomValidity('');
   }
 });
 
 price.addEventListener('input', () => {
-  let value = price.value
-  if (value >= MAX_PRICE) {
-    price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
-  } else if (value === 0) {
-    price.setCustomValidity('Цена не может равняться 0');
+  const value = price.value;
+  if (value < minPrice) {
+    price.setCustomValidity('Цена не может быть ниже ' + minPrice);
+  } else if (value >=  MAX_PRICE) {
+    price.setCustomValidity('Цена не может превышать ' + minPrice);
   } else {
     price.setCustomValidity('');
   }

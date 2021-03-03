@@ -82,7 +82,7 @@ const createSimilarAdvertisements = (similarAdvertisements,value='any') => {
   for (let i = 0; i < similarListFragment.children.length; i++) {
     popups[i] = similarListFragment.children[i];
   }
-  console.log(filteredAdvertisements)
+  
   removeMarkers()
   renderAdvertisementsOnMap(filteredAdvertisements);
   return popups;

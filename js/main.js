@@ -11,10 +11,11 @@ import {
   deactivateForm,
   activateForm,
   activateFilters,
-  hosingTypeEvent,
-  housingPriceEvent,
-  housingRoomsEvent,
-  housingGuestsEvent,
+  // hosingTypeEvent,
+  // housingPriceEvent,
+  // housingRoomsEvent,
+  // housingGuestsEvent,
+  filterEvetns,
   setFormSubmit
 } from './form.js';
 
@@ -30,18 +31,19 @@ getData((similarAdvertisements) => {
   const advrts = similarAdvertisements.slice(0,SIMILAR_ADVERTISEMENTS_QUANTITY);
   activateFilters();
   createSimilarAdvertisements(advrts);
-  hosingTypeEvent( (value) => {
-    createSimilarAdvertisements(advrts,value);
-  })
-  housingPriceEvent( (value) => {
-    createSimilarAdvertisements(advrts,value);
-  })
-  housingRoomsEvent( (value) => {
-    createSimilarAdvertisements(advrts,value);
-  })
-  housingGuestsEvent( (value) => {
-    createSimilarAdvertisements(advrts,value);
-  })
+  filterEvetns( (value) => createSimilarAdvertisements(advrts,value) );
+  // hosingTypeEvent( (value) => {
+  //   createSimilarAdvertisements(advrts,value);
+  // })
+  // housingPriceEvent( (value) => {
+  //   createSimilarAdvertisements(advrts,value);
+  // })
+  // housingRoomsEvent( (value) => {
+  //   createSimilarAdvertisements(advrts,value);
+  // })
+  // housingGuestsEvent( (value) => {
+  //   createSimilarAdvertisements(advrts,value);
+  // })
 }) 
 
 setFormSubmit();

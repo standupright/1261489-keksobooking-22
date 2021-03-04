@@ -13,7 +13,6 @@ const sortByType = (advertisementsElement, newAdvrtsArray, value) => {
     newAdvrtsArray.push(advertisementsElement);
   }
 
-  return newAdvrtsArray;
 }
 
 // Сортировка по цене
@@ -38,7 +37,7 @@ const sortByPrice = (advertisementsElement, newAdvrtsArray, value) => {
     default:
       break;
   }
-  return newAdvrtsArray;
+
 }
 
 // Сортировка по числу комнат
@@ -63,7 +62,7 @@ const sortByRooms = (advertisementsElement, newAdvrtsArray, value) => {
     default:
       break;
   }
-  return newAdvrtsArray;
+
 }
 
 // Сортировка по количеству гостей
@@ -88,7 +87,7 @@ const sortByGuests = (advertisementsElement, newAdvrtsArray, value) => {
     default:
       break;
   }
-  return newAdvrtsArray;
+
 }
 
 
@@ -99,11 +98,21 @@ const createSimilarAdvertisements = (similarAdvertisements,value='any') => {
   similarAdvertisements
     .slice()
     .sort((advertisementsElement) => {
-      sortByType(advertisementsElement, filteredAdvertisements, value);
-      sortByPrice(advertisementsElement, filteredAdvertisements, value);
-      sortByRooms(advertisementsElement, filteredAdvertisements, value);
+      sortByType(advertisementsElement, filteredAdvertisements, value)
+    })
+    .sort((advertisementsElement) => {
+      sortByPrice(advertisementsElement, filteredAdvertisements, value)
+    })
+    .sort((advertisementsElement) => {
+      sortByRooms(advertisementsElement, filteredAdvertisements, value)
+    })
+    .sort((advertisementsElement) => {
       sortByGuests(advertisementsElement, filteredAdvertisements, value);
     })
+
+
+
+  console.log(filteredAdvertisements)
 
   filteredAdvertisements.forEach(({
     author,
@@ -163,8 +172,8 @@ const createSimilarAdvertisements = (similarAdvertisements,value='any') => {
   for (let i = 0; i < similarListFragment.children.length; i++) {
     popups[i] = similarListFragment.children[i];
   }
-  console.log(filteredAdvertisements)
-  console.log(popups)
+ 
+
   removeMarkers()
   renderAdvertisementsOnMap(filteredAdvertisements,popups);
 };

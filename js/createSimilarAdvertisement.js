@@ -12,7 +12,7 @@ const sortByType = (advertisementsElement, newAdvrtsArray, value) => {
   if (value === type) {
     newAdvrtsArray.push(advertisementsElement);
   }
-
+  return newAdvrtsArray
 }
 
 // Сортировка по цене
@@ -37,7 +37,7 @@ const sortByPrice = (advertisementsElement, newAdvrtsArray, value) => {
     default:
       break;
   }
-
+  return newAdvrtsArray
 }
 
 // Сортировка по числу комнат
@@ -62,7 +62,7 @@ const sortByRooms = (advertisementsElement, newAdvrtsArray, value) => {
     default:
       break;
   }
-
+  return newAdvrtsArray
 }
 
 // Сортировка по количеству гостей
@@ -87,7 +87,7 @@ const sortByGuests = (advertisementsElement, newAdvrtsArray, value) => {
     default:
       break;
   }
-
+  return newAdvrtsArray
 }
 
 
@@ -97,20 +97,12 @@ const createSimilarAdvertisements = (similarAdvertisements,value='any') => {
   const similarListFragment = document.createDocumentFragment();
   similarAdvertisements
     .slice()
-    .sort((advertisementsElement) => {
-      sortByType(advertisementsElement, filteredAdvertisements, value)
+    .filter((advertisementsElement) => {
+      return sortByType(advertisementsElement, filteredAdvertisements, value) 
+      &&  sortByPrice(advertisementsElement, filteredAdvertisements, value) 
+      && sortByRooms(advertisementsElement, filteredAdvertisements, value)
+      && sortByGuests(advertisementsElement, filteredAdvertisements, value);
     })
-    .sort((advertisementsElement) => {
-      sortByPrice(advertisementsElement, filteredAdvertisements, value)
-    })
-    .sort((advertisementsElement) => {
-      sortByRooms(advertisementsElement, filteredAdvertisements, value)
-    })
-    .sort((advertisementsElement) => {
-      sortByGuests(advertisementsElement, filteredAdvertisements, value);
-    })
-
-
 
   console.log(filteredAdvertisements)
 

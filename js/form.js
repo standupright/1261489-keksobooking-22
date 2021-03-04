@@ -184,25 +184,24 @@ price.addEventListener('input', () => {
   price.reportValidity();
 });
 
-const onRoomNumberChange = function () {
-  if (this.value === '0' && roomNumber.value !== '100') {
-    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 100 комнатах')
-  } else if (this.value === '1' && roomNumber.value === '100') {
-    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 1, 2 или 3 комнате')
-  } else if (this.value === '2' && (roomNumber.value === '1' || roomNumber.value === '100')) {
-    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 2 или 3 комнатах')
-  } else if (this.value === '3' && roomNumber.value !== '3') {
-    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 3 комнатах')
+const onRoomNumberChange = function(){
+  if (capacity.value === '0' && roomNumber.value !== '100') {
+    capacity.setCustomValidity('Выбранное количество гостей может расположиться лишь в 100 комнатах')
+  } else if (capacity.value === '1' && roomNumber.value === '100') {
+    capacity.setCustomValidity('Выбранное количество гостей может расположиться лишь в 1, 2 или 3 комнате')
+  } else if (capacity.value === '2' && (roomNumber.value === '1' || roomNumber.value === '100')) {
+    capacity.setCustomValidity('Выбранное количество гостей может расположиться лишь в 2 или 3 комнатах')
+  } else if (capacity.value === '3' && roomNumber.value !== '3') {
+    capacity.setCustomValidity('Выбранное количество гостей может расположиться лишь в 3 комнатах')
   } else {
-    this.setCustomValidity('')
+    capacity.setCustomValidity('')
   }
-  this.reportValidity();
+  capacity.reportValidity();
 };
 
 capacity.addEventListener('change', onRoomNumberChange);
 
-const onResetButtonClick = (evt) => {
-  evt.preventDefault();
+const resetForm = () => {
   housingType.value = 'any';
   housingPrice.value = 'any';
   housingRooms.value = 'any';
@@ -214,7 +213,7 @@ const onResetButtonClick = (evt) => {
   timein.value = '12:00';
   timeout.value = '12:00';
   roomNumber.value = '1';
-  capacity.value = '3';
+  capacity.value = '1';
   description.value = '';
 
   for (let i = 0; i < featureCheckboxes.length; i++) {
@@ -226,15 +225,20 @@ const onResetButtonClick = (evt) => {
     lat: 35.68170,
     lng: 139.75388,
   });
+}
+
+const onResetButtonClick = (evt) => {
+  evt.preventDefault();
+  resetForm();
 };
 
 resetButton.addEventListener('click', onResetButtonClick);
 
 const setFormSubmit = () => {
   informForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const formData = new FormData(evt.target);
-    sendData(() => onResetButtonClick(), () => formData)
+    evt.preventDefault();    
+    const formData = new FormData(informForm);
+    sendData(resetForm, formData)
   });
 }
 

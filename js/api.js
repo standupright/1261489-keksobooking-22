@@ -18,10 +18,10 @@ const getData = (onSuccess) => {
 
 };
 
-const sendData = (onSuccess, body) => {
+const sendData = (onSuccess, bodyForm) => {
   fetch('https://22.javascript.pages.academy/keksobooking', {
     method: 'POST',
-    body,
+    body:bodyForm, 
   })
     .then((response) => {
       if (response.ok) {

@@ -1,6 +1,5 @@
 import {
-  createSimilarAdvertisements,
-  popups
+  createSimilarAdvertisements
 } from './createSimilarAdvertisement.js';
 
 import {
@@ -53,6 +52,5 @@ export {
   renderAdvertisementsOnMap,
   deactivateForm,
   activateForm,
-  popups,
   mainPinMarker
 }

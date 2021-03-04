@@ -1,5 +1,4 @@
 import {
-  popups,
   address,
   activateForm,
   deactivateForm
@@ -72,7 +71,7 @@ const regularIcon = L.icon({
 
 const regularMarkers = [];
 
-const renderAdvertisementsOnMap = (similarAdvertisements) => {
+const renderAdvertisementsOnMap = (similarAdvertisements,popups) => {
 
   for (let i = 0; i < similarAdvertisements.length; i++) {
     const regularPinMarker = L.marker({

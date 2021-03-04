@@ -68,6 +68,26 @@ const activateFilters = () => {
   }
 }
 
+// // const filterEvents for map
+// const filterEvetns = (cb) => {
+//   housingType.addEventListener('change', (evt) => 
+//   {
+//     cb(evt.target.value);
+//   });
+//   housingPrice.addEventListener('change', (evt) => 
+//   {
+//     cb(evt.target.value);
+//   });
+//   housingRooms.addEventListener('change', (evt) => 
+//   {
+//     cb(evt.target.value);
+//   });
+//   housingPrice.addEventListener('change', (evt) => 
+//   {
+//     cb(evt.target.value);
+//   });
+// }
+
 // filters events for map
 const hosingTypeEvent = (cb) => {
   housingType.addEventListener('change', (evt) => 
@@ -91,7 +111,7 @@ const housingRoomsEvent = (cb) => {
 };
 
 const housingGuestsEvent = (cb) => {
-  housingPrice.addEventListener('change', (evt) => 
+  housingGuests.addEventListener('change', (evt) => 
   {
     cb(evt.target.value);
   });
@@ -227,5 +247,6 @@ export {
   housingPriceEvent,
   housingRoomsEvent,
   housingGuestsEvent,
+  // filterEvetns,
   setFormSubmit
 }

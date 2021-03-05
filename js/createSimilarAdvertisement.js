@@ -89,13 +89,13 @@ const sortByGuests = (advertisementsElement, value) => {
 }
 
 // Сортировка по доп удобствам
-const sortByFeatures = (advertisementsElement,checkMapCheckboxes) => {
-  //let valuesCheckBoxes = checkMapCheckboxes();
-  //console .log(valuesCheckBoxes)
-  return true;
-  /////console.log(checkMapCheckboxes)
- // console.log(checkMapCheckboxes())
-}
+// const sortByFeatures = (advertisementsElement,checkMapCheckboxes) => {
+//   //let valuesCheckBoxes = checkMapCheckboxes();
+//   //console .log(valuesCheckBoxes)
+//   return true;
+//   /////console.log(checkMapCheckboxes)
+//  // console.log(checkMapCheckboxes())
+// }
 
 const createSimilarAdvertisements = (similarAdvertisements,valueType='any',valuePrice='any',valueRooms='any',valueGuests='any',checkFeatures) => {
   const filteredAdvertisements = [];  

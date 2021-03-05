@@ -3,108 +3,119 @@ import {renderAdvertisementsOnMap,removeMarkers} from './main.js'
 const cardTemplate = document.querySelector('#card');
 
 // Сортировка по типу жилья
-const sortByType = (advertisementsElement, newAdvrtsArray, value) => {
-  const type = advertisementsElement.offer.type;
-  if (value === 'any') {
-    newAdvrtsArray.push(advertisementsElement);
+const sortByType = (advertisementsElement, value) => {
+  if (advertisementsElement.offer.type === value || value === 'any'){
+    return true;
   }
 
-  if (value === type) {
-    newAdvrtsArray.push(advertisementsElement);
-  }
-  return newAdvrtsArray
 }
 
 // Сортировка по цене
-const sortByPrice = (advertisementsElement, newAdvrtsArray, value) => {
+const sortByPrice = (advertisementsElement, value) => {
   const price = advertisementsElement.offer.price;
   switch (value) {
+    case 'any':
+      return true;
     case 'middle':
       if (price >= 10000 && price < 50000) {
-        newAdvrtsArray.push(advertisementsElement);
+        return true;
       }
       break;
     case 'low':
       if (price <= 10000) {
-        newAdvrtsArray.push(advertisementsElement);
+        return true;
       }
       break;
     case 'high':
       if (price >= 50000) {
-        newAdvrtsArray.push(advertisementsElement);
+        return true;
       }
       break;
     default:
-      break;
+      return true;
   }
-  return newAdvrtsArray
 }
 
 // Сортировка по числу комнат
-const sortByRooms = (advertisementsElement, newAdvrtsArray, value) => {
+const sortByRooms = (advertisementsElement, value) => {
   const rooms = advertisementsElement.offer.rooms;
   switch (value) {
+    case 'any':
+      return true;
     case '1':
       if (rooms === 1) {
-        newAdvrtsArray.push(advertisementsElement);
+        return true;
       }
       break;
     case '2':
       if (rooms === 2) {
-        newAdvrtsArray.push(advertisementsElement);
+        return true;
       }
       break;
     case '3':
       if (rooms === 3) {
-        newAdvrtsArray.push(advertisementsElement);
+        return true;
       }
       break;
     default:
-      break;
+      return true;
   }
-  return newAdvrtsArray
 }
 
 // Сортировка по количеству гостей
-const sortByGuests = (advertisementsElement, newAdvrtsArray, value) => {
+const sortByGuests = (advertisementsElement, value) => {
   const guests = advertisementsElement.offer.guests;
   switch (value) {
+    case 'any':
+      return true;
     case '1':
       if (guests === 1) {
-        newAdvrtsArray.push(advertisementsElement);
+        return true;
       }
       break;
     case '2':
       if (guests === 2) {
-        newAdvrtsArray.push(advertisementsElement);
+        return true;
       }
       break;
     case '0':
       if (guests === 0) {
-        newAdvrtsArray.push(advertisementsElement);
+        return true;
       }
       break;
     default:
-      break;
+      return false;
   }
-  return newAdvrtsArray
 }
 
+// Сортировка по доп удобствам
+const sortByFeatures = (advertisementsElement,checkMapCheckboxes) => {
+  //let valuesCheckBoxes = checkMapCheckboxes();
+  //console .log(valuesCheckBoxes)
+  return true;
+  /////console.log(checkMapCheckboxes)
+ // console.log(checkMapCheckboxes())
+}
 
-const createSimilarAdvertisements = (similarAdvertisements,value='any') => {
+const createSimilarAdvertisements = (similarAdvertisements,valueType='any',valuePrice='any',valueRooms='any',valueGuests='any',checkFeatures) => {
   const filteredAdvertisements = [];  
   const popups = [];
   const similarListFragment = document.createDocumentFragment();
   similarAdvertisements
     .slice()
     .filter((advertisementsElement) => {
-      return sortByType(advertisementsElement, filteredAdvertisements, value) 
-      &&  sortByPrice(advertisementsElement, filteredAdvertisements, value) 
-      && sortByRooms(advertisementsElement, filteredAdvertisements, value)
-      && sortByGuests(advertisementsElement, filteredAdvertisements, value);
+      if (sortByType(advertisementsElement, valueType) 
+      &&  sortByPrice(advertisementsElement, valuePrice) 
+      && sortByRooms(advertisementsElement, valueRooms)
+      && sortByGuests(advertisementsElement, valueGuests)
+      && sortByFeatures(advertisementsElement,checkFeatures)) {
+        filteredAdvertisements.push(advertisementsElement);
+      }
     })
+  // Сортировка по доп удобствам
+  
 
-  console.log(filteredAdvertisements)
+  // console.log(filteredAdvertisements)
 
   filteredAdvertisements.forEach(({
     author,

@@ -69,53 +69,46 @@ const activateFilters = () => {
 }
 
 // // const filterEvents for map
-const filterEvetns = (cb) => {
-  housingType.addEventListener('change', (evt) => 
+const filterEvents = (cb) => {
+  const checkFeatures = () => {
+    let featuresValues = [];
+    for (let i = 0; i < mapCheckboxes.length; i++) {
+      if (mapCheckboxes[i].checked) {
+        featuresValues.push(mapCheckboxes[i].value)
+      }
+    }
+    return featuresValues;
+  }
+
+  housingType.addEventListener('change', () => 
   {
-    cb(evt.target.value);
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures);
   });
-  housingPrice.addEventListener('change', (evt) => 
+  housingPrice.addEventListener('change', () => 
   {
-    cb(evt.target.value);
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures);
   });
-  housingRooms.addEventListener('change', (evt) => 
+  housingRooms.addEventListener('change', () => 
   {
-    cb(evt.target.value);
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures);
   });
-  housingGuests.addEventListener('change', (evt) => 
+  housingGuests.addEventListener('change', () => 
   {
-    cb(evt.target.value);
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures);
   });
+
+  
+
+  const onFeaturesChecked = (arrayCheckboxes,index) => {
+    arrayCheckboxes[index].addEventListener('click', ()=>{
+      cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures);      
+    })
+  }
+
+  for (let i = 0; i < mapCheckboxes.length; i++) {
+    onFeaturesChecked(mapCheckboxes,i);
+  }
 }
-
-// filters events for map
-const hosingTypeEvent = (cb) => {
-  housingType.addEventListener('change', (evt) => 
-  {
-    cb(evt.target.value);
-  });
-};
-
-const housingPriceEvent = (cb) => {
-  housingPrice.addEventListener('change', (evt) => 
-  {
-    cb(evt.target.value);
-  });
-};
-
-const housingRoomsEvent = (cb) => {
-  housingRooms.addEventListener('change', (evt) => 
-  {
-    cb(evt.target.value);
-  });
-};
-
-const housingGuestsEvent = (cb) => {
-  housingGuests.addEventListener('change', (evt) => 
-  {
-    cb(evt.target.value);
-  });
-};
 
 // validation
 
@@ -247,10 +240,6 @@ export {
   deactivateForm,
   activateForm,
   activateFilters,
-  hosingTypeEvent,
-  housingPriceEvent,
-  housingRoomsEvent,
-  housingGuestsEvent,
-  filterEvetns,
+  filterEvents,
   setFormSubmit
 }

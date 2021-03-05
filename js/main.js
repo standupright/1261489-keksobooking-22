@@ -11,11 +11,7 @@ import {
   deactivateForm,
   activateForm,
   activateFilters,
-  // hosingTypeEvent,
-  // housingPriceEvent,
-  // housingRoomsEvent,
-  // housingGuestsEvent,
-  filterEvetns,
+  filterEvents,
   setFormSubmit
 } from './form.js';
 
@@ -31,19 +27,7 @@ getData((similarAdvertisements) => {
   const advrts = similarAdvertisements.slice(0,SIMILAR_ADVERTISEMENTS_QUANTITY);
   activateFilters();
   createSimilarAdvertisements(advrts);
-  filterEvetns( (value) => createSimilarAdvertisements(advrts,value) );
-  // hosingTypeEvent( (value) => {
-  //   createSimilarAdvertisements(advrts,value);
-  // })
-  // housingPriceEvent( (value) => {
-  //   createSimilarAdvertisements(advrts,value);
-  // })
-  // housingRoomsEvent( (value) => {
-  //   createSimilarAdvertisements(advrts,value);
-  // })
-  // housingGuestsEvent( (value) => {
-  //   createSimilarAdvertisements(advrts,value);
-  // })
+  filterEvents( (valueType,valuePrice,valueRooms,valueGuests,checkFeatures) => createSimilarAdvertisements(advrts,valueType,valuePrice,valueRooms,valueGuests,checkFeatures) );
 }) 
 
 setFormSubmit();

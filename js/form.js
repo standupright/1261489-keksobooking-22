@@ -82,26 +82,26 @@ const filterEvents = (cb) => {
 
   housingType.addEventListener('change', () => 
   {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures);
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
   });
   housingPrice.addEventListener('change', () => 
   {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures);
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
   });
   housingRooms.addEventListener('change', () => 
   {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures);
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
   });
   housingGuests.addEventListener('change', () => 
   {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures);
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
   });
 
   
 
   const onFeaturesChecked = (arrayCheckboxes,index) => {
     arrayCheckboxes[index].addEventListener('click', ()=>{
-      cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures);      
+      cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());      
     })
   }
 

@@ -27,7 +27,7 @@ getData((similarAdvertisements) => {
   const advrts = similarAdvertisements.slice(0,SIMILAR_ADVERTISEMENTS_QUANTITY);
   activateFilters();
   createSimilarAdvertisements(advrts);
-  filterEvents( (valueType,valuePrice,valueRooms,valueGuests,checkFeatures) => createSimilarAdvertisements(advrts,valueType,valuePrice,valueRooms,valueGuests,checkFeatures) );
+  filterEvents( (valueType,valuePrice,valueRooms,valueGuests, valuesFeature) => createSimilarAdvertisements(advrts,valueType,valuePrice,valueRooms,valueGuests,valuesFeature) );
 }) 
 
 setFormSubmit();

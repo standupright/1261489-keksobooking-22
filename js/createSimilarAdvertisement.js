@@ -89,15 +89,30 @@ const sortByGuests = (advertisementsElement, value) => {
 }
 
 // Сортировка по доп удобствам
-// const sortByFeatures = (advertisementsElement,checkMapCheckboxes) => {
-//   //let valuesCheckBoxes = checkMapCheckboxes();
-//   //console .log(valuesCheckBoxes)
-//   return true;
-//   /////console.log(checkMapCheckboxes)
-//  // console.log(checkMapCheckboxes())
-// }
+const sortByFeatures = (advertisementsElement, valuesFeature) => {
+  const features = advertisementsElement.offer.features;
 
-const createSimilarAdvertisements = (similarAdvertisements,valueType='any',valuePrice='any',valueRooms='any',valueGuests='any',checkFeatures) => {
+  if (valuesFeature.length === 0) {
+    return true;
+  } else {
+    let accumulator = 0;
+
+    for (let i = 0; i < valuesFeature.length; i++) {
+      for (let j = 0; j < features.length; j++) {        
+        if (features[j]===valuesFeature[i]) {
+          accumulator++;
+        }      
+      } 
+    }
+    
+    if (accumulator===valuesFeature.length) {
+      return true;
+    }
+  }
+
+}
+
+const createSimilarAdvertisements = (similarAdvertisements,valueType='any',valuePrice='any',valueRooms='any',valueGuests='any',valuesFeature=[]) => {
   const filteredAdvertisements = [];  
   const popups = [];
   const similarListFragment = document.createDocumentFragment();
@@ -108,7 +123,7 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
       &&  sortByPrice(advertisementsElement, valuePrice) 
       && sortByRooms(advertisementsElement, valueRooms)
       && sortByGuests(advertisementsElement, valueGuests)
-      && sortByFeatures(advertisementsElement,checkFeatures)) {
+      && sortByFeatures(advertisementsElement,valuesFeature)) {
         filteredAdvertisements.push(advertisementsElement);
       }
     })

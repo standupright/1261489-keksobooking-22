@@ -182,8 +182,31 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
 
     advertisement.querySelector('.popup__description').textContent =
       offer.description;
-    advertisement.querySelector('.popup__photos').textContent = offer.photos;
-    advertisement.querySelector('.popup__avatar').textContent = author.avatar;
+    
+    const photos = advertisement.querySelector('.popup__photos');
+
+    while (photos.firstChild) {
+      photos.removeChild(photos.firstChild);
+    }
+
+    const createImg = (nameParent) => {
+      const element = document.createElement('img');
+      element.classList.add('.popup__photo');
+      element.width = '45';
+      element.height = '40';
+      nameParent.appendChild(element);
+      return element;
+    }
+
+    offer.photos.forEach((value,index) => {
+      createImg(photos);
+      if (photos.children[index]){
+        photos.children[index].src = value;
+      }
+    });
+
+    // advertisement.querySelector('.popup__photos').textContent = offer.photos;
+    advertisement.querySelector('.popup__avatar').src= author.avatar;
     similarListFragment.appendChild(advertisement);
   });
 

@@ -1,6 +1,6 @@
 import {
   createSimilarAdvertisements
-} from './create-similar-advertisement.js';
+} from './create-similar-advertisements.js';
 
 import {
   getData

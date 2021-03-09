@@ -204,9 +204,8 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
         photos.children[index].src = value;
       }
     });
-
-    // advertisement.querySelector('.popup__photos').textContent = offer.photos;
-    advertisement.querySelector('.popup__avatar').src= author.avatar;
+    
+    advertisement.querySelector('.popup__avatar').src = author.avatar;
     similarListFragment.appendChild(advertisement);
   });
 

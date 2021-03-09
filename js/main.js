@@ -1,6 +1,6 @@
 import {
   createSimilarAdvertisements
-} from './createSimilarAdvertisement.js';
+} from './create-similar-advertisement.js';
 
 import {
   getData
@@ -20,6 +20,8 @@ import {
   removeMarkers,
   mainPinMarker
 } from './map.js';
+
+import './images-preview.js'
 
 const RERENDER_DELAY = 500;
 const SIMILAR_ADVERTISEMENTS_QUANTITY = 10;

@@ -7,7 +7,6 @@ const sortByType = (advertisementsElement, value) => {
   if (advertisementsElement.offer.type === value || value === 'any'){
     return true;
   }
-
 }
 
 // Сортировка по цене
@@ -212,7 +211,6 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
   for (let i = 0; i < similarListFragment.children.length; i++) {
     popups[i] = similarListFragment.children[i];
   }
- 
 
   removeMarkers()
   renderAdvertisementsOnMap(filteredAdvertisements,popups);

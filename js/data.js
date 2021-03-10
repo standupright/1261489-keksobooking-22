@@ -31,10 +31,7 @@ const createRandomLengthArr = ([...arr], maxLength) =>
     },
     () => arr.splice ((Math.random () * arr.length) | 0, 1)[0] );
 
-let xCordLocation = getRandomCords (35.65, 35.7, 5);
-let yCordLocation = getRandomCords (139.7, 139.8, 5);
-
-const createAdvertisement = () => {
+const createAdvertisement = (xCordLocation = getRandomCords (35.65, 35.7, 5),yCordLocation = getRandomCords (139.7, 139.8, 5)) => {
   return {
     author: {
       avatar: 'img/avatars/user' + createUserNumber () + '.png',

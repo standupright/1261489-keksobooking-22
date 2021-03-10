@@ -4,9 +4,7 @@ const cardTemplate = document.querySelector('#card');
 
 // Сортировка по типу жилья
 const sortByType = (advertisementsElement, value) => {
-  if (advertisementsElement.offer.type === value || value === 'any'){
-    return true;
-  }
+  return advertisementsElement.offer.type === value || value === 'any'
 }
 
 // Сортировка по цене
@@ -16,20 +14,11 @@ const sortByPrice = (advertisementsElement, value) => {
     case 'any':
       return true;
     case 'middle':
-      if (price >= 10000 && price < 50000) {
-        return true;
-      }
-      break;
+      return price >= 10000 && price < 50000;
     case 'low':
-      if (price <= 10000) {
-        return true;
-      }
-      break;
+      return price <= 10000;
     case 'high':
-      if (price >= 50000) {
-        return true;
-      }
-      break;
+      return price >= 50000;
     default:
       return true;
   }
@@ -42,20 +31,11 @@ const sortByRooms = (advertisementsElement, value) => {
     case 'any':
       return true;
     case '1':
-      if (rooms === 1) {
-        return true;
-      }
-      break;
+      return rooms === 1;
     case '2':
-      if (rooms === 2) {
-        return true;
-      }
-      break;
+      return rooms === 2;
     case '3':
-      if (rooms === 3) {
-        return true;
-      }
-      break;
+      return rooms === 3;
     default:
       return true;
   }
@@ -68,20 +48,11 @@ const sortByGuests = (advertisementsElement, value) => {
     case 'any':
       return true;
     case '1':
-      if (guests === 1) {
-        return true;
-      }
-      break;
+      return guests === 1;
     case '2':
-      if (guests === 2) {
-        return true;
-      }
-      break;
+      return guests === 2;
     case '0':
-      if (guests === 0) {
-        return true;
-      }
-      break;
+      return guests === 0;
     default:
       return false;
   }
@@ -95,20 +66,15 @@ const sortByFeatures = (advertisementsElement, valuesFeature) => {
     return true;
   } else {
     let accumulator = 0;
-
     for (let i = 0; i < valuesFeature.length; i++) {
       for (let j = 0; j < features.length; j++) {        
         if (features[j]===valuesFeature[i]) {
           accumulator++;
         }      
       } 
-    }
-    
-    if (accumulator===valuesFeature.length) {
-      return true;
-    }
+    }    
+    return accumulator === valuesFeature.length
   }
-
 }
 
 const createSimilarAdvertisements = (similarAdvertisements,valueType='any',valuePrice='any',valueRooms='any',valueGuests='any',valuesFeature=[]) => {
@@ -122,24 +88,37 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
       &&  sortByPrice(advertisementsElement, valuePrice) 
       && sortByRooms(advertisementsElement, valueRooms)
       && sortByGuests(advertisementsElement, valueGuests)
-      && sortByFeatures(advertisementsElement,valuesFeature)) {
+      && sortByFeatures(advertisementsElement, valuesFeature)) {
         filteredAdvertisements.push(advertisementsElement);
       }
     })
-  // Сортировка по доп удобствам
-  
-
-  // console.log(filteredAdvertisements)
 
   filteredAdvertisements.forEach(({
     author,
     offer,
   }) => {
     const advertisement = cardTemplate.cloneNode(true).content;
-    advertisement.querySelector('.popup__title').textContent = offer.title;
-    advertisement.querySelector('.popup__text--address').textContent =
-      offer.addres;
-    advertisement.querySelector('.popup__text--price').textContent = offer.price;
+    const title = advertisement.querySelector('.popup__title');
+    const price = advertisement.querySelector('.popup__text--price');
+    const address = advertisement.querySelector('.popup__text--address');
+    const type = advertisement.querySelector('.popup__type');
+    const capacity = advertisement.querySelector('.popup__text--capacity');
+    const textTime = advertisement.querySelector('.popup__text--time');
+    const features = advertisement.querySelector('.popup__features');
+    const description = advertisement.querySelector('.popup__description');
+    const photos = advertisement.querySelector('.popup__photos');
+    const avatar = advertisement.querySelector('.popup__avatar');
+
+    const completeTextContentInPopup = (popupElement, advertisementElement) => {
+      advertisementElement === '' ? popupElement.classList.add('visually-hidden') : popupElement.textContent = advertisementElement;
+    }
+
+    completeTextContentInPopup(title,offer.title);
+    completeTextContentInPopup(price,offer.price);
+    completeTextContentInPopup(address,offer.address);
+    completeTextContentInPopup(description,offer.description);
+
+    author.avatar === '' ? avatar.classList.add('visually-hidden') : avatar.src = author.avatar;   
 
     const TYPE_NAMES = {
       'flat': 'Квартира',
@@ -148,22 +127,26 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
       'palace': 'Дворец',
     };
 
-    Object.keys(TYPE_NAMES).forEach((value) => {
-      if (offer.type === value) {
-        advertisement.querySelector('.popup__type').textContent = TYPE_NAMES[`${value}`];
-      }
-    });
+    const swapTypeName = () => {
+      Object.keys(TYPE_NAMES).forEach((value) => {
+        if (offer.type === value) {
+          type.textContent = TYPE_NAMES[`${value}`];
+        }
+      });
+    }
 
-    advertisement.querySelector('.popup__text--capacity').textContent =
-      offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
+    offer.type === '' ? avatar.classList.add('visually-hidden') : swapTypeName();
 
-    advertisement.querySelector('.popup__text--time').textContent =
-      'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
+    if (offer.rooms === undefined || offer.guests === undefined) {
+      capacity.classList.add('visually-hidden');
+    } else {
+      capacity.textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
+    }
+   
+    textTime.textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
 
-    const popupFeatures = advertisement.querySelector('.popup__features');
-
-    while (popupFeatures.firstChild) {
-      popupFeatures.removeChild(popupFeatures.firstChild);
+    while (features.firstChild) {
+      features.removeChild(features.firstChild);
     }
 
     const createElementInList = (nameChild, nameParent) => {
@@ -175,14 +158,13 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
       return element;
     };
 
-    offer.features.forEach(value => {
-      createElementInList(value, popupFeatures);
-    });
-
-    advertisement.querySelector('.popup__description').textContent =
-      offer.description;
-    
-    const photos = advertisement.querySelector('.popup__photos');
+    if (offer.features.length === 0) {
+      features.classList.add('visually-hidden');
+    } else {
+      offer.features.forEach(value => {
+        createElementInList(value, features);
+      });    
+    }
 
     while (photos.firstChild) {
       photos.removeChild(photos.firstChild);
@@ -197,14 +179,17 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
       return element;
     }
 
-    offer.photos.forEach((value,index) => {
-      createImg(photos);
-      if (photos.children[index]){
-        photos.children[index].src = value;
-      }
-    });
+    if (offer.photos.length === 0) {
+      photos.classList.add('visually-hidden');
+    } else {
+      offer.photos.forEach((value,index) => {
+        createImg(photos);
+        if (photos.children[index]){
+          photos.children[index].src = value;
+        }
+      });     
+    }   
     
-    advertisement.querySelector('.popup__avatar').src = author.avatar;
     similarListFragment.appendChild(advertisement);
   });
 

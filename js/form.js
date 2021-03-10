@@ -17,7 +17,6 @@ const TYPE_PRICES = {
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
 const MAX_PRICE = 1000000;
-let minPrice = 5000;
 
 const filtersMap = document.querySelector('.map__filters');
 const mapFeautures = filtersMap.querySelector('.map__features');
@@ -71,8 +70,7 @@ const activateFilters = () => {
   }
 }
 
-// // const filterEvents for map
-const filterEvents = (cb) => {
+const filterAdvertisements = (cb) => {
   const checkFeatures = () => {
     let featuresValues = [];
     for (let i = 0; i < mapCheckboxes.length; i++) {
@@ -98,9 +96,7 @@ const filterEvents = (cb) => {
   housingGuests.addEventListener('change', () => 
   {
     cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-
-  
+  }); 
 
   const onFeaturesChecked = (arrayCheckboxes,index) => {
     arrayCheckboxes[index].addEventListener('click', ()=>{
@@ -117,6 +113,8 @@ const filterEvents = (cb) => {
 
 address.setAttribute('readonly', true);
 address.value = '35.68170' + ', ' + '139.75388';
+
+let minPrice = 5000;
 
 const onTypeChange = function () {
   minPrice = TYPE_PRICES[`${this.value}`];
@@ -247,6 +245,6 @@ export {
   deactivateForm,
   activateForm,
   activateFilters,
-  filterEvents,
+  filterAdvertisements,
   setFormSubmit
 }

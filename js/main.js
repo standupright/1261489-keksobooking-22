@@ -11,7 +11,7 @@ import {
   deactivateForm,
   activateForm,
   activateFilters,
-  filterEvents,
+  filterAdvertisements,
   setFormSubmit
 } from './form.js';
 
@@ -31,7 +31,7 @@ const renderAdvertisements = () => {
     const advrts = similarAdvertisements.slice(0, SIMILAR_ADVERTISEMENTS_QUANTITY);
     activateFilters();
     createSimilarAdvertisements(advrts);
-    filterEvents(_.debounce(
+    filterAdvertisements(_.debounce(
       (valueType, valuePrice, valueRooms, valueGuests, valuesFeature) => createSimilarAdvertisements(advrts, valueType, valuePrice, valueRooms, valueGuests, valuesFeature),
       RERENDER_DELAY,
     ));

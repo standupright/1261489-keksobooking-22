@@ -1,6 +1,6 @@
 import {
   createSimilarAdvertisements
-} from './createSimilarAdvertisement.js';
+} from './create-similar-advertisements.js';
 
 import {
   getData
@@ -11,7 +11,7 @@ import {
   deactivateForm,
   activateForm,
   activateFilters,
-  filterEvents,
+  filterAdvertisements,
   setFormSubmit
 } from './form.js';
 
@@ -21,19 +21,24 @@ import {
   mainPinMarker
 } from './map.js';
 
+import './images-preview.js'
+
 const RERENDER_DELAY = 500;
 const SIMILAR_ADVERTISEMENTS_QUANTITY = 10;
 
-getData((similarAdvertisements) => {
-  const advrts = similarAdvertisements.slice(0,SIMILAR_ADVERTISEMENTS_QUANTITY);
-  activateFilters();
-  createSimilarAdvertisements(advrts);
-  filterEvents(_.debounce(
-    (valueType,valuePrice,valueRooms,valueGuests, valuesFeature) => createSimilarAdvertisements(advrts,valueType,valuePrice,valueRooms,valueGuests,valuesFeature),
-    RERENDER_DELAY,
-  ));
-});
+const renderAdvertisements = () => {
+  getData((similarAdvertisements) => {
+    const advrts = similarAdvertisements.slice(0, SIMILAR_ADVERTISEMENTS_QUANTITY);
+    activateFilters();
+    createSimilarAdvertisements(advrts);
+    filterAdvertisements(_.debounce(
+      (valueType, valuePrice, valueRooms, valueGuests, valuesFeature) => createSimilarAdvertisements(advrts, valueType, valuePrice, valueRooms, valueGuests, valuesFeature),
+      RERENDER_DELAY,
+    ));
+  });
+}
 
+renderAdvertisements();
 setFormSubmit();
 
 export {
@@ -42,5 +47,6 @@ export {
   renderAdvertisementsOnMap,
   deactivateForm,
   activateForm,
-  mainPinMarker
+  mainPinMarker,
+  renderAdvertisements
 }

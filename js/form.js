@@ -3,7 +3,8 @@ import {
 } from './api.js';
 
 import {
-  mainPinMarker
+  mainPinMarker,
+  renderAdvertisements
 } from './main.js';
 
 const TYPE_PRICES = {
@@ -16,7 +17,6 @@ const TYPE_PRICES = {
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
 const MAX_PRICE = 1000000;
-let minPrice = 5000;
 
 const filtersMap = document.querySelector('.map__filters');
 const mapFeautures = filtersMap.querySelector('.map__features');
@@ -39,6 +39,8 @@ const featureCheckboxes = document.querySelectorAll('.feature__checkbox')
 const informFieldsets = informForm.querySelectorAll('fieldset');
 const description = document.querySelector('#description');
 const resetButton = document.querySelector('.ad-form__reset');
+const formPhoto = document.querySelector('.ad-form__photo')
+const picPreview = document.querySelector('.ad-form-header__pic-preview');
 
 const deactivateForm = () => {
   informForm.classList.add('ad-form--disabled');
@@ -68,8 +70,7 @@ const activateFilters = () => {
   }
 }
 
-// // const filterEvents for map
-const filterEvents = (cb) => {
+const filterAdvertisements = (cb) => {
   const checkFeatures = () => {
     let featuresValues = [];
     for (let i = 0; i < mapCheckboxes.length; i++) {
@@ -95,9 +96,7 @@ const filterEvents = (cb) => {
   housingGuests.addEventListener('change', () => 
   {
     cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-
-  
+  }); 
 
   const onFeaturesChecked = (arrayCheckboxes,index) => {
     arrayCheckboxes[index].addEventListener('click', ()=>{
@@ -114,6 +113,8 @@ const filterEvents = (cb) => {
 
 address.setAttribute('readonly', true);
 address.value = '35.68170' + ', ' + '139.75388';
+
+let minPrice = 5000;
 
 const onTypeChange = function () {
   minPrice = TYPE_PRICES[`${this.value}`];
@@ -170,7 +171,7 @@ price.addEventListener('input', () => {
   if (value < minPrice) {
     price.setCustomValidity('Цена не может быть ниже ' + minPrice);
   } else if (value >=  MAX_PRICE) {
-    price.setCustomValidity('Цена не может превышать ' + minPrice);
+    price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
   } else {
     price.setCustomValidity('');
   }
@@ -208,6 +209,8 @@ const resetForm = () => {
   roomNumber.value = '1';
   capacity.value = '1';
   description.value = '';
+  formPhoto.style = '';
+  picPreview.src = 'img/muffin-grey.svg';
 
   for (let i = 0; i < featureCheckboxes.length; i++) {
     featureCheckboxes[i].checked = false;
@@ -218,6 +221,8 @@ const resetForm = () => {
     lat: 35.68170,
     lng: 139.75388,
   });
+
+  renderAdvertisements();
 }
 
 const onResetButtonClick = (evt) => {
@@ -240,6 +245,6 @@ export {
   deactivateForm,
   activateForm,
   activateFilters,
-  filterEvents,
+  filterAdvertisements,
   setFormSubmit
 }

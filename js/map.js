@@ -53,10 +53,11 @@ mainPinMarker.on('moveend', (evt) => {
 
 let counter = 0;
 let choosedAdvertisement;
-const chooseAdvertisement = (renderedAdvertisements) => {
+
+const chooseAdvertisement = (renderedAdvertisements) => {  
   choosedAdvertisement = renderedAdvertisements[counter];
   counter++;
-  if (counter > renderedAdvertisements.length) {
+  if (counter > renderedAdvertisements.length-1) {
     counter = 0;
   }
 
@@ -71,12 +72,12 @@ const regularIcon = L.icon({
 
 const regularMarkers = [];
 
-const renderAdvertisementsOnMap = (similarAdvertisements,popups) => {
+const renderAdvertisementsOnMap = (advertisements,popups) => {
 
-  for (let i = 0; i < similarAdvertisements.length; i++) {
+  for (let i = 0; i < advertisements.length; i++) {
     const regularPinMarker = L.marker({
-      lat: similarAdvertisements[i].location.lat,
-      lng: similarAdvertisements[i].location.lng,
+      lat: advertisements[i].location.lat,
+      lng: advertisements[i].location.lng,
     }, {
       icon: regularIcon,
     });

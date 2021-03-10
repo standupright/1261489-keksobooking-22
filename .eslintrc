@@ -6,6 +6,7 @@ parserOptions:
 
 globals: 
   L: true
+  _: true
 
 env:
   es2017: true

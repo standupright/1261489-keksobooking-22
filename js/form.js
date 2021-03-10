@@ -173,7 +173,7 @@ price.addEventListener('input', () => {
   if (value < minPrice) {
     price.setCustomValidity('Цена не может быть ниже ' + minPrice);
   } else if (value >=  MAX_PRICE) {
-    price.setCustomValidity('Цена не может превышать ' + minPrice);
+    price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
   } else {
     price.setCustomValidity('');
   }

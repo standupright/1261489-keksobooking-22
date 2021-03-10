@@ -1,4 +1,6 @@
 import './data.js';
 import './createSimilarAdvertisement.js';
-import './map.js';
-import './form.js';
+import {initiateMap} from './map.js';
+import {address} from './form.js';
+
+export {initiateMap,address}

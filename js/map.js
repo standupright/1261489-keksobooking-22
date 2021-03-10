@@ -1,6 +1,14 @@
-import {similarAdvertisements} from './data.js';
+import {
+  similarAdvertisements
+} from './data.js';
 
-import {createSimilarAdvertisement} from './createSimilarAdvertisement.js';
+import {
+  createSimilarAdvertisement
+} from './createSimilarAdvertisement.js';
+
+import {
+  address
+} from './main.js';
 
 let initiateMap = false;
 const map = L.map('map-canvas')
@@ -39,14 +47,16 @@ let cords = {
   y: 139.75388,
 };
 
-mainPinMarker.on('moveend', (evt) => {
-  let newCords = evt.target.getLatLng();
-  cords.x = (newCords.lat).toFixed(5);
-  cords.y = (newCords.lng).toFixed(5);
-
+const onMainPinMarkerMove = mainPinMarker.on('moveend', (evt) => {
+  let pinCords = evt.target.getLatLng();
+  cords.x = (pinCords.lat).toFixed(5);
+  cords.y = (pinCords.lng).toFixed(5);
+  address.value = cords.x + ', ' + cords.y;
 });
 
-similarAdvertisements.forEach(({location}) => {
+similarAdvertisements.forEach(({
+  location
+}) => {
   const regularIcon = L.icon({
     iconUrl: 'img/pin.svg',
     iconSize: [40, 40],
@@ -58,19 +68,16 @@ similarAdvertisements.forEach(({location}) => {
     lng: location.y,
   }, {
     icon: regularIcon,
-  }, 
-  );
-  
+  }, );
+
   regularPinMarker
     .addTo(map)
     .bindPopup(createSimilarAdvertisement(), {
       keepInView: true,
-    }, 
-    )
+    }, )
 });
 
 
 export {
-  initiateMap,
-  cords
+  initiateMap
 }

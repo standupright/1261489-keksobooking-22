@@ -80,28 +80,28 @@ const filterEvents = (cb) => {
     return featuresValues;
   }
 
-  housingType.addEventListener('change', () => 
+  housingType.addEventListener('change', () =>
   {
     cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
   });
-  housingPrice.addEventListener('change', () => 
+  housingPrice.addEventListener('change', () =>
   {
     cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
   });
-  housingRooms.addEventListener('change', () => 
+  housingRooms.addEventListener('change', () =>
   {
     cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
   });
-  housingGuests.addEventListener('change', () => 
+  housingGuests.addEventListener('change', () =>
   {
     cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
   });
 
-  
+
 
   const onFeaturesChecked = (arrayCheckboxes,index) => {
     arrayCheckboxes[index].addEventListener('click', ()=>{
-      cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());      
+      cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
     })
   }
 
@@ -195,41 +195,43 @@ const onRoomNumberChange = function(){
 capacity.addEventListener('change', onRoomNumberChange);
 
 const resetForm = () => {
-  housingType.value = 'any';
-  housingPrice.value = 'any';
-  housingRooms.value = 'any';
-  housingGuests.value = 'any';
-  title.value = '';
-  address.value = '35.68170' + ', ' + '139.75388';
-  type.value = 'flat';
-  price.value = '';
-  timein.value = '12:00';
-  timeout.value = '12:00';
-  roomNumber.value = '1';
-  capacity.value = '1';
-  description.value = '';
+    housingType.value ='any';
+    housingPrice.value = 'any';
+    housingRooms.value = 'any';
+    housingGuests.value = 'any';
+    title.value = '';
+    address.value = '35.68170' + ', ' + '139.75388';
+    type.value = 'flat';
+    price.value = '';
+    timein.value = '12:00';
+    timeout.value = '12:00';
+    roomNumber.value = '1';
+    capacity.value = '1';
+    description.value = '';
 
-  for (let i = 0; i < featureCheckboxes.length; i++) {
-    featureCheckboxes[i].checked = false;
-    mapCheckboxes[i].checked = false;
-  }
+    for (let i = 0; i < featureCheckboxes.length; i++) {
+      featureCheckboxes[i].checked = false;
+      mapCheckboxes[i].checked = false;
+    }
 
-  mainPinMarker.setLatLng({
-    lat: 35.68170,
-    lng: 139.75388,
-  });
+    mainPinMarker.setLatLng({
+      lat: 35.68170,
+      lng: 139.75388,
+    });
 }
+
 
 const onResetButtonClick = (evt) => {
   evt.preventDefault();
   resetForm();
-};
+}
 
 resetButton.addEventListener('click', onResetButtonClick);
 
+
 const setFormSubmit = () => {
   informForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();    
+    evt.preventDefault();
     const formData = new FormData(informForm);
     sendData(resetForm, formData)
   });

@@ -3,7 +3,8 @@ import {
 } from './api.js';
 
 import {
-  mainPinMarker
+  mainPinMarker,
+  renderAdvertisements
 } from './main.js';
 
 const TYPE_PRICES = {
@@ -39,6 +40,8 @@ const featureCheckboxes = document.querySelectorAll('.feature__checkbox')
 const informFieldsets = informForm.querySelectorAll('fieldset');
 const description = document.querySelector('#description');
 const resetButton = document.querySelector('.ad-form__reset');
+const formPhoto = document.querySelector('.ad-form__photo')
+const picPreview = document.querySelector('.ad-form-header__pic-preview');
 
 const deactivateForm = () => {
   informForm.classList.add('ad-form--disabled');
@@ -208,6 +211,8 @@ const resetForm = () => {
   roomNumber.value = '1';
   capacity.value = '1';
   description.value = '';
+  formPhoto.style = '';
+  picPreview.src = 'img/muffin-grey.svg';
 
   for (let i = 0; i < featureCheckboxes.length; i++) {
     featureCheckboxes[i].checked = false;
@@ -218,6 +223,8 @@ const resetForm = () => {
     lat: 35.68170,
     lng: 139.75388,
   });
+
+  renderAdvertisements();
 }
 
 const onResetButtonClick = (evt) => {

@@ -3,7 +3,6 @@ import {
 } from './api.js';
 
 import {
-  initiateMap,
   mainPinMarker
 } from './main.js';
 
@@ -17,6 +16,7 @@ const TYPE_PRICES = {
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
 const MAX_PRICE = 1000000;
+let minPrice = 5000;
 
 const filtersMap = document.querySelector('.map__filters');
 const mapFeautures = filtersMap.querySelector('.map__features');
@@ -40,25 +40,27 @@ const informFieldsets = informForm.querySelectorAll('fieldset');
 const description = document.querySelector('#description');
 const resetButton = document.querySelector('.ad-form__reset');
 
-// Неактивное состояние
-informForm.classList.add('ad-form--disabled');
-for (let i = 0; i < informFieldsets.length; i++) {
-  informFieldsets[i].disabled = true;
+const deactivateForm = () => {
+  informForm.classList.add('ad-form--disabled');
+  for (let i = 0; i < informFieldsets.length; i++) {
+    informFieldsets[i].disabled = true;
+  }
+
+  filtersMap.classList.add('ad-form--disabled');
+  mapFeautures.disabled = true;
+  for (let i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].disabled = true;
+  }
 }
 
-filtersMap.classList.add('ad-form--disabled');
-mapFeautures.disabled = true;
-for (let i = 0; i < mapFilters.length; i++) {
-  mapFilters[i].disabled = true;
-}
-
-// Активное состояние
-if (initiateMap) {
+const activateForm = () => {
   informForm.classList.remove('ad-form--disabled');
   for (let i = 0; i < informFieldsets.length; i++) {
     informFieldsets[i].disabled = false;
   }
+}
 
+const activateFilters = () => {
   filtersMap.classList.remove('ad-form--disabled');
   mapFeautures.disabled = false;
   for (let i = 0; i < mapFilters.length; i++) {
@@ -66,15 +68,60 @@ if (initiateMap) {
   }
 }
 
+// // const filterEvents for map
+const filterEvents = (cb) => {
+  const checkFeatures = () => {
+    let featuresValues = [];
+    for (let i = 0; i < mapCheckboxes.length; i++) {
+      if (mapCheckboxes[i].checked) {
+        featuresValues.push(mapCheckboxes[i].value)
+      }
+    }
+    return featuresValues;
+  }
+
+  housingType.addEventListener('change', () => 
+  {
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
+  });
+  housingPrice.addEventListener('change', () => 
+  {
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
+  });
+  housingRooms.addEventListener('change', () => 
+  {
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
+  });
+  housingGuests.addEventListener('change', () => 
+  {
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
+  });
+
+  
+
+  const onFeaturesChecked = (arrayCheckboxes,index) => {
+    arrayCheckboxes[index].addEventListener('click', ()=>{
+      cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());      
+    })
+  }
+
+  for (let i = 0; i < mapCheckboxes.length; i++) {
+    onFeaturesChecked(mapCheckboxes,i);
+  }
+}
+
+// validation
+
 address.setAttribute('readonly', true);
 address.value = '35.68170' + ', ' + '139.75388';
 
-const onHousingTypeChange = function () {
-  price.min = TYPE_PRICES[`${this.value}`];
+const onTypeChange = function () {
+  minPrice = TYPE_PRICES[`${this.value}`];
+  price.min = minPrice;
   price.placeholder = TYPE_PRICES[`${this.value}`];
 };
 
-housingType.addEventListener('change', onHousingTypeChange);
+type.addEventListener('change', onTypeChange);
 
 const onTimeChange = function (changeOut) {
   return function () {
@@ -108,42 +155,46 @@ title.addEventListener('input', () => {
 price.addEventListener('invalid', () => {
   if (price.validity.valueMissing) {
     price.setCustomValidity('Обязательное поле');
-  } else {
+  } else if (price.validity.rangeOverflow) {
+    price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
+  } else if (price.validity.rangeUnderflow) {
+    price.setCustomValidity('Цена не может быть ниже ' + minPrice);
+  }
+  else {
     price.setCustomValidity('');
   }
 });
 
 price.addEventListener('input', () => {
-  let value = price.value
-  if (value >= MAX_PRICE) {
-    price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
-  } else if (value === 0) {
-    price.setCustomValidity('Цена не может равняться 0');
+  const value = price.value;
+  if (value < minPrice) {
+    price.setCustomValidity('Цена не может быть ниже ' + minPrice);
+  } else if (value >=  MAX_PRICE) {
+    price.setCustomValidity('Цена не может превышать ' + minPrice);
   } else {
     price.setCustomValidity('');
   }
   price.reportValidity();
 });
 
-const onRoomNumberChange = function () {
-  if (this.value === '0' && roomNumber.value !== '100') {
-    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 100 комнатах')
-  } else if (this.value === '1' && roomNumber.value === '100') {
-    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 1, 2 или 3 комнате')
-  } else if (this.value === '2' && (roomNumber.value === '1' || roomNumber.value === '100')) {
-    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 2 или 3 комнатах')
-  } else if (this.value === '3' && roomNumber.value !== '3') {
-    this.setCustomValidity('Выбранное количество гостей может расположиться лишь в 3 комнатах')
+const onRoomNumberChange = function(){
+  if (capacity.value === '0' && roomNumber.value !== '100') {
+    capacity.setCustomValidity('Выбранное количество гостей может расположиться лишь в 100 комнатах')
+  } else if (capacity.value === '1' && roomNumber.value === '100') {
+    capacity.setCustomValidity('Выбранное количество гостей может расположиться лишь в 1, 2 или 3 комнате')
+  } else if (capacity.value === '2' && (roomNumber.value === '1' || roomNumber.value === '100')) {
+    capacity.setCustomValidity('Выбранное количество гостей может расположиться лишь в 2 или 3 комнатах')
+  } else if (capacity.value === '3' && roomNumber.value !== '3') {
+    capacity.setCustomValidity('Выбранное количество гостей может расположиться лишь в 3 комнатах')
   } else {
-    this.setCustomValidity('')
+    capacity.setCustomValidity('')
   }
-  this.reportValidity();
+  capacity.reportValidity();
 };
 
 capacity.addEventListener('change', onRoomNumberChange);
 
-const onResetButtonClick = (evt) => {
-  evt.preventDefault();
+const resetForm = () => {
   housingType.value = 'any';
   housingPrice.value = 'any';
   housingRooms.value = 'any';
@@ -155,7 +206,7 @@ const onResetButtonClick = (evt) => {
   timein.value = '12:00';
   timeout.value = '12:00';
   roomNumber.value = '1';
-  capacity.value = '3';
+  capacity.value = '1';
   description.value = '';
 
   for (let i = 0; i < featureCheckboxes.length; i++) {
@@ -165,21 +216,30 @@ const onResetButtonClick = (evt) => {
 
   mainPinMarker.setLatLng({
     lat: 35.68170,
-    lng: 139.75388
+    lng: 139.75388,
   });
+}
+
+const onResetButtonClick = (evt) => {
+  evt.preventDefault();
+  resetForm();
 };
 
 resetButton.addEventListener('click', onResetButtonClick);
 
 const setFormSubmit = () => {
   informForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const formData = new FormData(evt.target);
-    sendData(() => onResetButtonClick(), () => formData)
+    evt.preventDefault();    
+    const formData = new FormData(informForm);
+    sendData(resetForm, formData)
   });
 }
 
 export {
   address,
+  deactivateForm,
+  activateForm,
+  activateFilters,
+  filterEvents,
   setFormSubmit
 }

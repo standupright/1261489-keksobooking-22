@@ -1,13 +1,14 @@
 import {
-  popups,
-  address
+  address,
+  activateForm,
+  deactivateForm
 } from './main.js';
 
-let initiateMap = false;
+deactivateForm();
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    initiateMap = true;
+    activateForm();
   })
   .setView({
     lat: 35.681700,
@@ -62,33 +63,42 @@ const chooseAdvertisement = (renderedAdvertisements) => {
   return choosedAdvertisement;
 }
 
-const renderAdvertisementsOnMap = (similarAdvertisements) => {
-  similarAdvertisements.forEach(({
-    location
-  }) => {
-    const regularIcon = L.icon({
-      iconUrl: 'img/pin.svg',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-    });
+const regularIcon = L.icon({
+  iconUrl: 'img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
 
+const regularMarkers = [];
+
+const renderAdvertisementsOnMap = (similarAdvertisements,popups) => {
+
+  for (let i = 0; i < similarAdvertisements.length; i++) {
     const regularPinMarker = L.marker({
-      lat: location.lat,
-      lng: location.lng,
+      lat: similarAdvertisements[i].location.lat,
+      lng: similarAdvertisements[i].location.lng,
     }, {
       icon: regularIcon,
-    }, );
+    });
+
+    regularMarkers.push(regularPinMarker);
 
     regularPinMarker
       .addTo(map)
       .bindPopup(chooseAdvertisement(popups), {
         keepInView: true,
-      }, )
-  });
+      })
+  }
+}
+
+const removeMarkers = () => {
+  for (let i = 0; i < regularMarkers.length; i++) {
+    map.removeLayer(regularMarkers[i]);
+  }
 }
 
 export {
-  initiateMap,
   renderAdvertisementsOnMap,
+  removeMarkers,
   mainPinMarker
 }

@@ -8,7 +8,7 @@ const isEscEvent = (evt) => {
 
 const ALERT_SHOW_TIME = 5000;
 
-const showMessageErrorAlert = (error) => {
+const showMessageErrorAlert = () => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
   alertContainer.style.position = 'absolute';
@@ -50,7 +50,7 @@ const onWindowsClick = (container) => {
 const closeAlert = (container) => {
   container.remove();
   document.removeEventListener('keypress', onAlertKeydown(container))
-  document.addEventListener('click', onWindowsClick(container));
+  container.removeEventListener('click', onWindowsClick(container));
 }
 
 const showAlertSuccess = () => {
@@ -60,7 +60,7 @@ const showAlertSuccess = () => {
   main.append(alertContainer);
 
   document.addEventListener('keydown', onAlertKeydown(alertContainer));
-  document.addEventListener('click', onWindowsClick(alertContainer));
+  alertContainer.addEventListener('click', onWindowsClick(alertContainer));
 }
 
 const showAlertError = () => {
@@ -70,7 +70,7 @@ const showAlertError = () => {
   main.append(alertContainer);
 
   document.addEventListener('keydown', onAlertKeydown(alertContainer));
-  document.addEventListener('click', onWindowsClick(alertContainer));
+  alertContainer.addEventListener('click', onWindowsClick(alertContainer));
 }
 
 export {

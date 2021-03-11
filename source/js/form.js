@@ -7,11 +7,11 @@ import {
   renderAdvertisements
 } from './main.js';
 
-const TYPE_PRICES = {
-  'flat': 1000,
-  'bungalow': 0,
-  'house': 5000,
-  'palace': 10000,
+const TypePrices = {
+  flat: 1000,
+  bungalow: 0,
+  house: 5000,
+  palace: 10000,
 }
 
 const MIN_NAME_LENGTH = 30;
@@ -95,9 +95,9 @@ address.value = '35.68170' + ', ' + '139.75388';
 let minPrice = 5000;
 
 const onTypeChange = function () {
-  minPrice = TYPE_PRICES[`${this.value}`];
+  minPrice = TypePrices[this.value];
   price.min = minPrice;
-  price.placeholder = TYPE_PRICES[`${this.value}`];
+  price.placeholder = TypePrices[this.value];
 };
 
 type.addEventListener('change', onTypeChange);

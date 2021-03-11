@@ -72,8 +72,6 @@ const sortByFeatures = (advertisementsElement, valuesFeature) => {
   return true;
 }
 
-
-
 const filterAdvertisements = (    
   similarAdvertisements,
   valueType = 'any',

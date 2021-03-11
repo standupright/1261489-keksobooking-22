@@ -28,7 +28,8 @@ const RERENDER_DELAY = 500;
 const renderAdvertisements = () => {
   getData((similarAdvertisements) => {
     activateFilters();
-    createSimilarAdvertisements(similarAdvertisements);
+    _.debounce(
+      createSimilarAdvertisements(similarAdvertisements), RERENDER_DELAY)
     getFiltersValues(_.debounce(
       (valueType, valuePrice, valueRooms, valueGuests, valuesFeature) => 
         createSimilarAdvertisements(similarAdvertisements, valueType, valuePrice, valueRooms, valueGuests, valuesFeature),

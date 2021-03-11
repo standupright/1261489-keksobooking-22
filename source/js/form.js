@@ -70,7 +70,8 @@ const activateFilters = () => {
   }
 }
 
-const filterAdvertisements = (cb) => {
+// Функция передает в коллбэк все values фильтров для карты
+const getFiltersValues= (cb) => {
   const checkFeatures = () => {
     let featuresValues = [];
     for (let i = 0; i < mapCheckboxes.length; i++) {
@@ -81,32 +82,9 @@ const filterAdvertisements = (cb) => {
     return featuresValues;
   }
 
-  housingType.addEventListener('change', () => 
-  {
+  filtersMap.addEventListener('change', ()=> {
     cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-  housingPrice.addEventListener('change', () => 
-  {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-  housingRooms.addEventListener('change', () => 
-  {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-  housingGuests.addEventListener('change', () => 
-  {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  }); 
-
-  const onFeaturesChecked = (arrayCheckboxes,index) => {
-    arrayCheckboxes[index].addEventListener('click', ()=>{
-      cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());      
-    })
-  }
-
-  for (let i = 0; i < mapCheckboxes.length; i++) {
-    onFeaturesChecked(mapCheckboxes,i);
-  }
+  })
 }
 
 // validation
@@ -154,15 +132,19 @@ title.addEventListener('input', () => {
 });
 
 price.addEventListener('invalid', () => {
-  if (price.validity.valueMissing) {
-    price.setCustomValidity('Обязательное поле');
-  } else if (price.validity.rangeOverflow) {
-    price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
-  } else if (price.validity.rangeUnderflow) {
-    price.setCustomValidity('Цена не может быть ниже ' + minPrice);
-  }
-  else {
-    price.setCustomValidity('');
+  switch (true) {
+    case price.validity.valueMissing:
+      price.setCustomValidity('Обязательное поле');
+      break;
+    case price.validity.rangeOverflow:
+      price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
+      break;
+    case price.validity.rangeUnderflow:
+      price.setCustomValidity('Цена не может быть ниже ' + minPrice);
+      break;
+    default:
+      price.setCustomValidity('');
+      break;
   }
 });
 
@@ -245,6 +227,6 @@ export {
   deactivateForm,
   activateForm,
   activateFilters,
-  filterAdvertisements,
+  getFiltersValues,
   setFormSubmit
 }

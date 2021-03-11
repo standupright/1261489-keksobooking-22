@@ -11,7 +11,7 @@ import {
   deactivateForm,
   activateForm,
   activateFilters,
-  filterAdvertisements,
+  getFiltersValues,
   setFormSubmit
 } from './form.js';
 
@@ -24,15 +24,14 @@ import {
 import './images-preview.js'
 
 const RERENDER_DELAY = 500;
-const SIMILAR_ADVERTISEMENTS_QUANTITY = 10;
 
 const renderAdvertisements = () => {
   getData((similarAdvertisements) => {
-    const advrts = similarAdvertisements.slice(0, SIMILAR_ADVERTISEMENTS_QUANTITY);
     activateFilters();
-    createSimilarAdvertisements(advrts);
-    filterAdvertisements(_.debounce(
-      (valueType, valuePrice, valueRooms, valueGuests, valuesFeature) => createSimilarAdvertisements(advrts, valueType, valuePrice, valueRooms, valueGuests, valuesFeature),
+    createSimilarAdvertisements(similarAdvertisements);
+    getFiltersValues(_.debounce(
+      (valueType, valuePrice, valueRooms, valueGuests, valuesFeature) => 
+        createSimilarAdvertisements(similarAdvertisements, valueType, valuePrice, valueRooms, valueGuests, valuesFeature),
       RERENDER_DELAY,
     ));
   });

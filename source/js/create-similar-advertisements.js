@@ -69,9 +69,9 @@ const createSimilarAdvertisements = (
 
     if (offer.rooms === undefined || offer.guests === undefined) {
       capacity.classList.add('visually-hidden');
+    } else {
+      capacity.textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей'; 
     } 
-
-    capacity.textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';   
    
     textTime.textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
 
@@ -86,14 +86,13 @@ const createSimilarAdvertisements = (
       return element;
     };
 
-    if (offer.features.length === 0) {
+    if (offer.features.length) {
+      offer.features.forEach(value => {
+        createElementInList(value, features);
+      });      
+    } else {
       features.classList.add('visually-hidden');
-    }
-
-    offer.features.forEach(value => {
-      createElementInList(value, features);
-    });    
-
+    }   
 
     photos.innerHTML= '';
 
@@ -106,16 +105,16 @@ const createSimilarAdvertisements = (
       return element;
     }
 
-    if (offer.photos.length === 0) {
+    if (offer.photos.length) {
+      offer.photos.forEach((value,index) => {
+        createImg(photos);
+        if (photos.children[index]){
+          photos.children[index].src = value;
+        }
+      });
+    } else {      
       photos.classList.add('visually-hidden');
-    } 
-    
-    offer.photos.forEach((value,index) => {
-      createImg(photos);
-      if (photos.children[index]){
-        photos.children[index].src = value;
-      }
-    });
+    }  
 
     similarListFragment.appendChild(advertisement);
   });

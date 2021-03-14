@@ -67,25 +67,25 @@ const sortByFeatures = (advertisementsElement, valuesFeature) => {
   } else {
     let accumulator = 0;
     for (let i = 0; i < valuesFeature.length; i++) {
-      for (let j = 0; j < features.length; j++) {        
+      for (let j = 0; j < features.length; j++) {
         if (features[j]===valuesFeature[i]) {
           accumulator++;
-        }      
-      } 
-    }    
+        }
+      }
+    }
     return accumulator === valuesFeature.length
   }
 }
 
 const createSimilarAdvertisements = (similarAdvertisements,valueType='any',valuePrice='any',valueRooms='any',valueGuests='any',valuesFeature=[]) => {
-  const filteredAdvertisements = [];  
+  const filteredAdvertisements = [];
   const popups = [];
   const similarListFragment = document.createDocumentFragment();
   similarAdvertisements
     .slice()
     .filter((advertisementsElement) => {
-      if (sortByType(advertisementsElement, valueType) 
-      &&  sortByPrice(advertisementsElement, valuePrice) 
+      if (sortByType(advertisementsElement, valueType)
+      &&  sortByPrice(advertisementsElement, valuePrice)
       && sortByRooms(advertisementsElement, valueRooms)
       && sortByGuests(advertisementsElement, valueGuests)
       && sortByFeatures(advertisementsElement, valuesFeature)) {
@@ -118,7 +118,7 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
     completeTextContentInPopup(address,offer.address);
     completeTextContentInPopup(description,offer.description);
 
-    author.avatar === '' ? avatar.classList.add('visually-hidden') : avatar.src = author.avatar;   
+    author.avatar === '' ? avatar.classList.add('visually-hidden') : avatar.src = author.avatar;
 
     const TYPE_NAMES = {
       'flat': 'Квартира',
@@ -142,7 +142,7 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
     } else {
       capacity.textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
     }
-   
+
     textTime.textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
 
     while (features.firstChild) {
@@ -151,8 +151,8 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
 
     const createElementInList = (nameChild, nameParent) => {
       const element = document.createElement('li');
-      element.classList.add('.popup__feature');
-      element.classList.add('.popup__feature--' + nameChild);
+      element.classList.add('popup__feature');
+      element.classList.add('popup__feature--' + nameChild);
       element.textContent = nameChild;
       nameParent.appendChild(element);
       return element;
@@ -163,7 +163,7 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
     } else {
       offer.features.forEach(value => {
         createElementInList(value, features);
-      });    
+      });
     }
 
     while (photos.firstChild) {
@@ -172,7 +172,7 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
 
     const createImg = (nameParent) => {
       const element = document.createElement('img');
-      element.classList.add('.popup__photo');
+      element.classList.add('popup__photo');
       element.width = '45';
       element.height = '40';
       nameParent.appendChild(element);
@@ -187,9 +187,9 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
         if (photos.children[index]){
           photos.children[index].src = value;
         }
-      });     
-    }   
-    
+      });
+    }
+
     similarListFragment.appendChild(advertisement);
   });
 

@@ -96,13 +96,7 @@ const filterAdvertisements = (cb) => {
   housingGuests.addEventListener('change', () =>
   {
     cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-<<<<<<< HEAD:js/form.js
   });
-
-
-=======
-  }); 
->>>>>>> b650d7515040975d51e10a9f72ce012290adae82:source/js/form.js
 
   const onFeaturesChecked = (arrayCheckboxes,index) => {
     arrayCheckboxes[index].addEventListener('click', ()=>{
@@ -202,31 +196,6 @@ const onRoomNumberChange = function(){
 capacity.addEventListener('change', onRoomNumberChange);
 
 const resetForm = () => {
-<<<<<<< HEAD:js/form.js
-    housingType.value ='any';
-    housingPrice.value = 'any';
-    housingRooms.value = 'any';
-    housingGuests.value = 'any';
-    title.value = '';
-    address.value = '35.68170' + ', ' + '139.75388';
-    type.value = 'flat';
-    price.value = '';
-    timein.value = '12:00';
-    timeout.value = '12:00';
-    roomNumber.value = '1';
-    capacity.value = '1';
-    description.value = '';
-
-    for (let i = 0; i < featureCheckboxes.length; i++) {
-      featureCheckboxes[i].checked = false;
-      mapCheckboxes[i].checked = false;
-    }
-
-    mainPinMarker.setLatLng({
-      lat: 35.68170,
-      lng: 139.75388,
-    });
-=======
   housingType.value = 'any';
   housingPrice.value = 'any';
   housingRooms.value = 'any';
@@ -254,7 +223,6 @@ const resetForm = () => {
   });
 
   renderAdvertisements();
->>>>>>> b650d7515040975d51e10a9f72ce012290adae82:source/js/form.js
 }
 
 

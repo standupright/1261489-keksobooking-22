@@ -7,11 +7,11 @@ import {
   renderAdvertisements
 } from './main.js';
 
-const TYPE_PRICES = {
-  'flat': 1000,
-  'bungalow': 0,
-  'house': 5000,
-  'palace': 10000,
+const TypePrices = {
+  flat: 1000,
+  bungalow: 0,
+  house: 5000,
+  palace: 10000,
 }
 
 const MIN_NAME_LENGTH = 30;
@@ -70,7 +70,8 @@ const activateFilters = () => {
   }
 }
 
-const filterAdvertisements = (cb) => {
+// Функция передает в коллбэк все values фильтров для карты
+const getFiltersValues= (cb) => {
   const checkFeatures = () => {
     let featuresValues = [];
     for (let i = 0; i < mapCheckboxes.length; i++) {
@@ -81,32 +82,10 @@ const filterAdvertisements = (cb) => {
     return featuresValues;
   }
 
-  housingType.addEventListener('change', () =>
-  {
+  filtersMap.addEventListener('change', ()=> {
     cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-  housingPrice.addEventListener('change', () =>
-  {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-  housingRooms.addEventListener('change', () =>
-  {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-  housingGuests.addEventListener('change', () =>
-  {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
+  })
 
-  const onFeaturesChecked = (arrayCheckboxes,index) => {
-    arrayCheckboxes[index].addEventListener('click', ()=>{
-      cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-    })
-  }
-
-  for (let i = 0; i < mapCheckboxes.length; i++) {
-    onFeaturesChecked(mapCheckboxes,i);
-  }
 }
 
 // validation
@@ -117,9 +96,9 @@ address.value = '35.68170' + ', ' + '139.75388';
 let minPrice = 5000;
 
 const onTypeChange = function () {
-  minPrice = TYPE_PRICES[`${this.value}`];
+  minPrice = TypePrices[this.value];
   price.min = minPrice;
-  price.placeholder = TYPE_PRICES[`${this.value}`];
+  price.placeholder = TypePrices[this.value];
 };
 
 type.addEventListener('change', onTypeChange);
@@ -154,15 +133,19 @@ title.addEventListener('input', () => {
 });
 
 price.addEventListener('invalid', () => {
-  if (price.validity.valueMissing) {
-    price.setCustomValidity('Обязательное поле');
-  } else if (price.validity.rangeOverflow) {
-    price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
-  } else if (price.validity.rangeUnderflow) {
-    price.setCustomValidity('Цена не может быть ниже ' + minPrice);
-  }
-  else {
-    price.setCustomValidity('');
+  switch (true) {
+    case price.validity.valueMissing:
+      price.setCustomValidity('Обязательное поле');
+      break;
+    case price.validity.rangeOverflow:
+      price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
+      break;
+    case price.validity.rangeUnderflow:
+      price.setCustomValidity('Цена не может быть ниже ' + minPrice);
+      break;
+    default:
+      price.setCustomValidity('');
+      break;
   }
 });
 
@@ -225,7 +208,6 @@ const resetForm = () => {
   renderAdvertisements();
 }
 
-
 const onResetButtonClick = (evt) => {
   evt.preventDefault();
   resetForm();
@@ -247,6 +229,6 @@ export {
   deactivateForm,
   activateForm,
   activateFilters,
-  filterAdvertisements,
+  getFiltersValues,
   setFormSubmit
 }

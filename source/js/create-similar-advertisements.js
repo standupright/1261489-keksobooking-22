@@ -1,102 +1,40 @@
-import {renderAdvertisementsOnMap,removeMarkers} from './main.js'
+import {
+  renderAdvertisementsOnMap,
+  removeMarkers
+} from './main.js'
+
+import {
+  filterAdvertisements
+} from './filter-advertisements.js';
+
+const SIMILAR_ADVERTISEMENTS_QUANTITY = 10;
 
 const cardTemplate = document.querySelector('#card');
 
-// Сортировка по типу жилья
-const sortByType = (advertisementsElement, value) => {
-  return advertisementsElement.offer.type === value || value === 'any'
-}
-
-// Сортировка по цене
-const sortByPrice = (advertisementsElement, value) => {
-  const price = advertisementsElement.offer.price;
-  switch (value) {
-    case 'any':
-      return true;
-    case 'middle':
-      return price >= 10000 && price < 50000;
-    case 'low':
-      return price <= 10000;
-    case 'high':
-      return price >= 50000;
-    default:
-      return true;
-  }
-}
-
-// Сортировка по числу комнат
-const sortByRooms = (advertisementsElement, value) => {
-  const rooms = advertisementsElement.offer.rooms;
-  switch (value) {
-    case 'any':
-      return true;
-    case '1':
-      return rooms === 1;
-    case '2':
-      return rooms === 2;
-    case '3':
-      return rooms === 3;
-    default:
-      return true;
-  }
-}
-
-// Сортировка по количеству гостей
-const sortByGuests = (advertisementsElement, value) => {
-  const guests = advertisementsElement.offer.guests;
-  switch (value) {
-    case 'any':
-      return true;
-    case '1':
-      return guests === 1;
-    case '2':
-      return guests === 2;
-    case '0':
-      return guests === 0;
-    default:
-      return false;
-  }
-}
-
-// Сортировка по доп удобствам
-const sortByFeatures = (advertisementsElement, valuesFeature) => {
-  const features = advertisementsElement.offer.features;
-
-  if (valuesFeature.length === 0) {
-    return true;
-  } else {
-    let accumulator = 0;
-    for (let i = 0; i < valuesFeature.length; i++) {
-      for (let j = 0; j < features.length; j++) {
-        if (features[j]===valuesFeature[i]) {
-          accumulator++;
-        }
-      }
-    }
-    return accumulator === valuesFeature.length
-  }
-}
-
-const createSimilarAdvertisements = (similarAdvertisements,valueType='any',valuePrice='any',valueRooms='any',valueGuests='any',valuesFeature=[]) => {
-  const filteredAdvertisements = [];
+const createSimilarAdvertisements = (
+  similarAdvertisements,
+  valueType = 'any',
+  valuePrice = 'any',
+  valueRooms = 'any',
+  valueGuests = 'any',
+  valuesFeature = []) => {
   const popups = [];
   const similarListFragment = document.createDocumentFragment();
-  similarAdvertisements
-    .slice()
-    .filter((advertisementsElement) => {
-      if (sortByType(advertisementsElement, valueType)
-      &&  sortByPrice(advertisementsElement, valuePrice)
-      && sortByRooms(advertisementsElement, valueRooms)
-      && sortByGuests(advertisementsElement, valueGuests)
-      && sortByFeatures(advertisementsElement, valuesFeature)) {
-        filteredAdvertisements.push(advertisementsElement);
-      }
-    })
 
-  filteredAdvertisements.forEach(({
-    author,
-    offer,
-  }) => {
+  const filteredAdvertisements = filterAdvertisements(
+    similarAdvertisements,
+    valueType,
+    valuePrice,
+    valueRooms,
+    valueGuests,
+    valuesFeature).slice(0, SIMILAR_ADVERTISEMENTS_QUANTITY)
+
+  //Заполнение обьявлений по шаблону
+  filteredAdvertisements.forEach((
+    {
+      author,
+      offer,
+    }) => {
     const advertisement = cardTemplate.cloneNode(true).content;
     const title = advertisement.querySelector('.popup__title');
     const price = advertisement.querySelector('.popup__text--price');
@@ -120,22 +58,14 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
 
     author.avatar === '' ? avatar.classList.add('visually-hidden') : avatar.src = author.avatar;
 
-    const TYPE_NAMES = {
-      'flat': 'Квартира',
-      'bungalow': 'Бунгало',
-      'house': 'Дом',
-      'palace': 'Дворец',
+    const TypeNames = {
+      flat: 'Квартира',
+      bungalow: 'Бунгало',
+      house: 'Дом',
+      palace: 'Дворец',
     };
 
-    const swapTypeName = () => {
-      Object.keys(TYPE_NAMES).forEach((value) => {
-        if (offer.type === value) {
-          type.textContent = TYPE_NAMES[`${value}`];
-        }
-      });
-    }
-
-    offer.type === '' ? avatar.classList.add('visually-hidden') : swapTypeName();
+    offer.type === '' ? type.classList.add('visually-hidden') : type.textContent = TypeNames[offer.type];
 
     if (offer.rooms === undefined || offer.guests === undefined) {
       capacity.classList.add('visually-hidden');
@@ -145,9 +75,7 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
 
     textTime.textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
 
-    while (features.firstChild) {
-      features.removeChild(features.firstChild);
-    }
+    features.innerHTML = '';
 
     const createElementInList = (nameChild, nameParent) => {
       const element = document.createElement('li');
@@ -158,17 +86,14 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
       return element;
     };
 
-    if (offer.features.length === 0) {
-      features.classList.add('visually-hidden');
-    } else {
+    if (offer.features.length) {
       offer.features.forEach(value => {
         createElementInList(value, features);
-      });
+      })} else {
+      features.classList.add('visually-hidden');
     }
 
-    while (photos.firstChild) {
-      photos.removeChild(photos.firstChild);
-    }
+    photos.innerHTML= '';
 
     const createImg = (nameParent) => {
       const element = document.createElement('img');
@@ -179,15 +104,14 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
       return element;
     }
 
-    if (offer.photos.length === 0) {
-      photos.classList.add('visually-hidden');
-    } else {
+    if (offer.photos.length) {
       offer.photos.forEach((value,index) => {
         createImg(photos);
         if (photos.children[index]){
           photos.children[index].src = value;
         }
-      });
+      })} else {
+      photos.classList.add('visually-hidden');
     }
 
     similarListFragment.appendChild(advertisement);
@@ -197,7 +121,10 @@ const createSimilarAdvertisements = (similarAdvertisements,valueType='any',value
     popups[i] = similarListFragment.children[i];
   }
 
+  // Удаление предыдущих меток
   removeMarkers()
+
+  // Отрисовка
   renderAdvertisementsOnMap(filteredAdvertisements,popups);
 };
 

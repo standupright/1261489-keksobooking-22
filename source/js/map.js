@@ -51,33 +51,21 @@ mainPinMarker.on('moveend', (evt) => {
   setAddress(evt.target);
 });
 
-let counter = 0;
-let choosedAdvertisement;
-
-const chooseAdvertisement = (renderedAdvertisements) => {  
-  choosedAdvertisement = renderedAdvertisements[counter];
-  counter++;
-  if (counter > renderedAdvertisements.length-1) {
-    counter = 0;
-  }
-
-  return choosedAdvertisement;
-}
-
 const regularIcon = L.icon({
   iconUrl: 'img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
+
+// Отрисовка обьявлений на карту с добавлением балунов
 const regularMarkers = [];
+const renderAdvertisementsOnMap = (advertisements, popups) => {
 
-const renderAdvertisementsOnMap = (advertisements,popups) => {
-
-  for (let i = 0; i < advertisements.length; i++) {
+  advertisements.forEach((element,index)=> {
     const regularPinMarker = L.marker({
-      lat: advertisements[i].location.lat,
-      lng: advertisements[i].location.lng,
+      lat: element.location.lat,
+      lng: element.location.lng,
     }, {
       icon: regularIcon,
     });
@@ -86,10 +74,10 @@ const renderAdvertisementsOnMap = (advertisements,popups) => {
 
     regularPinMarker
       .addTo(map)
-      .bindPopup(chooseAdvertisement(popups), {
+      .bindPopup(popups[index], {
         keepInView: true,
       })
-  }
+  })
 }
 
 const removeMarkers = () => {

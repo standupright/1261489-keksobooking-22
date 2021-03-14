@@ -193,7 +193,5 @@ export {
   address,
   deactivateForm,
   activateForm,
-  activateFilters,
-  getFiltersValues,
   setFormSubmit
 }

@@ -1,3 +1,58 @@
+const filtersMap = document.querySelector('.map__filters');
+const mapFeautures = filtersMap.querySelector('.map__features');
+const mapFilters = filtersMap.querySelectorAll('.map__filter');
+const housingType = filtersMap.querySelector('#housing-type');
+const housingPrice = filtersMap.querySelector('#housing-price');
+const housingRooms = filtersMap.querySelector('#housing-rooms');
+const housingGuests = filtersMap.querySelector('#housing-guests');
+const mapCheckboxes = document.querySelectorAll('.map__checkbox');
+
+// Deactivate filters
+const deactivateFilters = () => {filtersMap.classList.add('ad-form--disabled');
+  mapFeautures.disabled = true;
+  for (let i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].disabled = true;
+  }
+}
+
+// Activate filters
+const activateFilters = () => {
+  filtersMap.classList.remove('ad-form--disabled');
+  mapFeautures.disabled = false;
+  for (let i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].disabled = false;
+  }
+}
+
+// Функция передает в коллбэк все values фильтров для карты
+const getFiltersValues= (cb) => {
+  const checkFeatures = () => {
+    let featuresValues = [];
+    for (let i = 0; i < mapCheckboxes.length; i++) {
+      if (mapCheckboxes[i].checked) {
+        featuresValues.push(mapCheckboxes[i].value)
+      }
+    }
+    return featuresValues;
+  }
+
+  filtersMap.addEventListener('change', ()=> {
+    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
+  })
+}
+
+// reset filters
+const resetFilters = () => {
+  housingType.value = 'any';
+  housingPrice.value = 'any';
+  housingRooms.value = 'any';
+  housingGuests.value = 'any';
+
+  for (let i = 0; i < mapCheckboxes.length; i++) {
+    mapCheckboxes[i].checked = false;
+  }
+}
+
 // Сортировка по типу жилья
 const sortByType = (advertisementsElement, valueType) => {
   return advertisementsElement.offer.type === valueType || valueType === 'any';
@@ -16,7 +71,7 @@ const sortByPrice = (advertisementsElement, valuePrice) => {
     case 'high':
       return price >= 50000;
     default:
-      return true;
+      return false;
   }
 }
 
@@ -72,7 +127,7 @@ const sortByFeatures = (advertisementsElement, valuesFeature) => {
   return true;
 }
 
-const filterAdvertisements = (    
+const filterAdvertisements = (
   similarAdvertisements,
   valueType = 'any',
   valuePrice = 'any',
@@ -80,7 +135,7 @@ const filterAdvertisements = (
   valueGuests = 'any',
   valuesFeature = []) => {
   const filteredAdvertisements = [];
-  
+
   similarAdvertisements
     .slice()
     .filter(advertisementsElement => {
@@ -98,4 +153,10 @@ const filterAdvertisements = (
   return filteredAdvertisements;
 };
 
-export {filterAdvertisements}
+export {
+  deactivateFilters,
+  activateFilters,
+  getFiltersValues,
+  resetFilters,
+  filterAdvertisements
+}

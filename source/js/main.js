@@ -10,10 +10,13 @@ import {
   address,
   deactivateForm,
   activateForm,
-  activateFilters,
-  getFiltersValues,
   setFormSubmit
 } from './form.js';
+
+import {
+  activateFilters,
+  getFiltersValues
+} from './filter-advertisements.js'
 
 import {
   renderAdvertisementsOnMap,
@@ -30,7 +33,7 @@ const renderAdvertisements = () => {
     activateFilters();
     createSimilarAdvertisements(similarAdvertisements);
     getFiltersValues(_.debounce(
-      (valueType, valuePrice, valueRooms, valueGuests, valuesFeature) => 
+      (valueType, valuePrice, valueRooms, valueGuests, valuesFeature) =>
         createSimilarAdvertisements(similarAdvertisements, valueType, valuePrice, valueRooms, valueGuests, valuesFeature),
       RERENDER_DELAY,
     ));

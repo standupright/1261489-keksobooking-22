@@ -47,8 +47,8 @@ const onWindowsClick = (evt) => {
 
 const closeAlert = () => {
   alertContainer.remove();
-  document.removeEventListener('keydown',onAlertKeydown);
-  alertContainer.removeEventListener('click',onWindowsClick);
+  document.removeEventListener('keydown', onAlertKeydown);
+  alertContainer.removeEventListener('click', onWindowsClick);
 }
 
 const showAlertSuccess = () => {

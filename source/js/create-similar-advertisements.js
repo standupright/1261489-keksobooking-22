@@ -51,10 +51,10 @@ const createSimilarAdvertisements = (
       advertisementElement === '' ? popupElement.classList.add('visually-hidden') : popupElement.textContent = advertisementElement;
     }
 
-    completeTextContentInPopup(title,offer.title);
-    completeTextContentInPopup(price,offer.price);
-    completeTextContentInPopup(address,offer.address);
-    completeTextContentInPopup(description,offer.description);
+    completeTextContentInPopup(title, offer.title);
+    completeTextContentInPopup(price, offer.price);
+    completeTextContentInPopup(address, offer.address);
+    completeTextContentInPopup(description, offer.description);
 
     author.avatar === '' ? avatar.classList.add('visually-hidden') : avatar.src = author.avatar;
 
@@ -125,7 +125,7 @@ const createSimilarAdvertisements = (
   removeMarkers()
 
   // Отрисовка
-  renderAdvertisementsOnMap(filteredAdvertisements,popups);
+  renderAdvertisementsOnMap(filteredAdvertisements, popups);
 };
 
 export {

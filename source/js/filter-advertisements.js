@@ -37,7 +37,7 @@ const getFiltersValues= (cb) => {
   }
 
   filtersMap.addEventListener('change', ()=> {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
+    cb(housingType.value, housingPrice.value, housingRooms.value, housingGuests.value, checkFeatures());
   })
 }
 

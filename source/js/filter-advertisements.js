@@ -136,18 +136,23 @@ const filterAdvertisements = (
   valuesFeature = []) => {
   const filteredAdvertisements = [];
 
+  const checkSorting = (element) => {
+    if (
+      sortByType(element, valueType) &&
+      sortByPrice(element, valuePrice) &&
+      sortByRooms(element, valueRooms) &&
+      sortByGuests(element, valueGuests) &&
+      sortByFeatures(element, valuesFeature)
+    ) {
+      filteredAdvertisements.push(element);
+    }
+    return filteredAdvertisements;
+  }
+
   similarAdvertisements
     .slice()
-    .filter(advertisementsElement => {
-      if (
-        sortByType(advertisementsElement, valueType) &&
-        sortByPrice(advertisementsElement, valuePrice) &&
-        sortByRooms(advertisementsElement, valueRooms) &&
-        sortByGuests(advertisementsElement, valueGuests) &&
-        sortByFeatures(advertisementsElement, valuesFeature)
-      ) {
-        filteredAdvertisements.push(advertisementsElement);
-      }
+    .some(advertisementsElement => {
+      return checkSorting(advertisementsElement).length === 10;
     });
 
   return filteredAdvertisements;

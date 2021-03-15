@@ -10,10 +10,13 @@ import {
   address,
   deactivateForm,
   activateForm,
-  activateFilters,
-  filterAdvertisements,
   setFormSubmit
 } from './form.js';
+
+import {
+  activateFilters,
+  getFiltersValues
+} from './filter-advertisements.js'
 
 import {
   renderAdvertisementsOnMap,
@@ -24,15 +27,14 @@ import {
 import './images-preview.js'
 
 const RERENDER_DELAY = 500;
-const SIMILAR_ADVERTISEMENTS_QUANTITY = 10;
 
 const renderAdvertisements = () => {
   getData((similarAdvertisements) => {
-    const advrts = similarAdvertisements.slice(0, SIMILAR_ADVERTISEMENTS_QUANTITY);
     activateFilters();
-    createSimilarAdvertisements(advrts);
-    filterAdvertisements(_.debounce(
-      (valueType, valuePrice, valueRooms, valueGuests, valuesFeature) => createSimilarAdvertisements(advrts, valueType, valuePrice, valueRooms, valueGuests, valuesFeature),
+    createSimilarAdvertisements(similarAdvertisements);
+    getFiltersValues(_.debounce(
+      (valueType, valuePrice, valueRooms, valueGuests, valuesFeature) =>
+        createSimilarAdvertisements(similarAdvertisements, valueType, valuePrice, valueRooms, valueGuests, valuesFeature),
       RERENDER_DELAY,
     ));
   });

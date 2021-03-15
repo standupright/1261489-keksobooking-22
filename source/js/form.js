@@ -7,25 +7,22 @@ import {
   renderAdvertisements
 } from './main.js';
 
-const TYPE_PRICES = {
-  'flat': 1000,
-  'bungalow': 0,
-  'house': 5000,
-  'palace': 10000,
+import {
+  deactivateFilters,
+  resetFilters
+} from './filter-advertisements.js'
+
+const TypePrices = {
+  flat: 1000,
+  bungalow: 0,
+  house: 5000,
+  palace: 10000,
 }
 
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
 const MAX_PRICE = 1000000;
 
-const filtersMap = document.querySelector('.map__filters');
-const mapFeautures = filtersMap.querySelector('.map__features');
-const mapFilters = filtersMap.querySelectorAll('.map__filter');
-const housingType = filtersMap.querySelector('#housing-type');
-const housingPrice = filtersMap.querySelector('#housing-price');
-const housingRooms = filtersMap.querySelector('#housing-rooms');
-const housingGuests = filtersMap.querySelector('#housing-guests');
-const mapCheckboxes = document.querySelectorAll('.map__checkbox');
 const informForm = document.querySelector('.ad-form');
 const title = document.querySelector('#title');
 const address = document.querySelector('#address');
@@ -36,7 +33,7 @@ const timeout = document.querySelector('#timeout');
 const roomNumber = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
 const featureCheckboxes = document.querySelectorAll('.feature__checkbox')
-const informFieldsets = informForm.querySelectorAll('fieldset');
+const informFieldsets = document.querySelectorAll('fieldset');
 const description = document.querySelector('#description');
 const resetButton = document.querySelector('.ad-form__reset');
 const formPhoto = document.querySelector('.ad-form__photo')
@@ -47,65 +44,13 @@ const deactivateForm = () => {
   for (let i = 0; i < informFieldsets.length; i++) {
     informFieldsets[i].disabled = true;
   }
-
-  filtersMap.classList.add('ad-form--disabled');
-  mapFeautures.disabled = true;
-  for (let i = 0; i < mapFilters.length; i++) {
-    mapFilters[i].disabled = true;
-  }
+  deactivateFilters();
 }
 
 const activateForm = () => {
   informForm.classList.remove('ad-form--disabled');
   for (let i = 0; i < informFieldsets.length; i++) {
     informFieldsets[i].disabled = false;
-  }
-}
-
-const activateFilters = () => {
-  filtersMap.classList.remove('ad-form--disabled');
-  mapFeautures.disabled = false;
-  for (let i = 0; i < mapFilters.length; i++) {
-    mapFilters[i].disabled = false;
-  }
-}
-
-const filterAdvertisements = (cb) => {
-  const checkFeatures = () => {
-    let featuresValues = [];
-    for (let i = 0; i < mapCheckboxes.length; i++) {
-      if (mapCheckboxes[i].checked) {
-        featuresValues.push(mapCheckboxes[i].value)
-      }
-    }
-    return featuresValues;
-  }
-
-  housingType.addEventListener('change', () => 
-  {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-  housingPrice.addEventListener('change', () => 
-  {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-  housingRooms.addEventListener('change', () => 
-  {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  });
-  housingGuests.addEventListener('change', () => 
-  {
-    cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());
-  }); 
-
-  const onFeaturesChecked = (arrayCheckboxes,index) => {
-    arrayCheckboxes[index].addEventListener('click', ()=>{
-      cb(housingType.value,housingPrice.value,housingRooms.value,housingGuests.value,checkFeatures());      
-    })
-  }
-
-  for (let i = 0; i < mapCheckboxes.length; i++) {
-    onFeaturesChecked(mapCheckboxes,i);
   }
 }
 
@@ -117,9 +62,9 @@ address.value = '35.68170' + ', ' + '139.75388';
 let minPrice = 5000;
 
 const onTypeChange = function () {
-  minPrice = TYPE_PRICES[`${this.value}`];
+  minPrice = TypePrices[this.value];
   price.min = minPrice;
-  price.placeholder = TYPE_PRICES[`${this.value}`];
+  price.placeholder = TypePrices[this.value];
 };
 
 type.addEventListener('change', onTypeChange);
@@ -154,15 +99,19 @@ title.addEventListener('input', () => {
 });
 
 price.addEventListener('invalid', () => {
-  if (price.validity.valueMissing) {
-    price.setCustomValidity('Обязательное поле');
-  } else if (price.validity.rangeOverflow) {
-    price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
-  } else if (price.validity.rangeUnderflow) {
-    price.setCustomValidity('Цена не может быть ниже ' + minPrice);
-  }
-  else {
-    price.setCustomValidity('');
+  switch (true) {
+    case price.validity.valueMissing:
+      price.setCustomValidity('Обязательное поле');
+      break;
+    case price.validity.rangeOverflow:
+      price.setCustomValidity('Цена не может превышать ' + MAX_PRICE);
+      break;
+    case price.validity.rangeUnderflow:
+      price.setCustomValidity('Цена не может быть ниже ' + minPrice);
+      break;
+    default:
+      price.setCustomValidity('');
+      break;
   }
 });
 
@@ -196,10 +145,6 @@ const onRoomNumberChange = function(){
 capacity.addEventListener('change', onRoomNumberChange);
 
 const resetForm = () => {
-  housingType.value = 'any';
-  housingPrice.value = 'any';
-  housingRooms.value = 'any';
-  housingGuests.value = 'any';
   title.value = '';
   address.value = '35.68170' + ', ' + '139.75388';
   type.value = 'flat';
@@ -214,7 +159,6 @@ const resetForm = () => {
 
   for (let i = 0; i < featureCheckboxes.length; i++) {
     featureCheckboxes[i].checked = false;
-    mapCheckboxes[i].checked = false;
   }
 
   mainPinMarker.setLatLng({
@@ -225,18 +169,23 @@ const resetForm = () => {
   renderAdvertisements();
 }
 
+const reset = () => {
+  resetForm();
+  resetFilters();
+}
+
 const onResetButtonClick = (evt) => {
   evt.preventDefault();
-  resetForm();
-};
+  reset();
+}
 
 resetButton.addEventListener('click', onResetButtonClick);
 
 const setFormSubmit = () => {
   informForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();    
+    evt.preventDefault();
     const formData = new FormData(informForm);
-    sendData(resetForm, formData)
+    sendData(reset, formData)
   });
 }
 
@@ -244,7 +193,5 @@ export {
   address,
   deactivateForm,
   activateForm,
-  activateFilters,
-  filterAdvertisements,
   setFormSubmit
 }

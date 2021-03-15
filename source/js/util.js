@@ -31,42 +31,40 @@ const showMessageErrorAlert = () => {
   }, ALERT_SHOW_TIME);
 }
 
-const onAlertKeydown = (container) => {
-  return (evt) => {
-    if (isEscEvent(evt)) {
-      evt.preventDefault();
-      closeAlert(container);
-    }
-  }
-}
+const alertContainer = document.createElement('div');
 
-const onWindowsClick = (container) => {
-  return (evt) => {
+const onAlertKeydown = (evt) => {
+  if (isEscEvent(evt)) {
     evt.preventDefault();
-    closeAlert(container);
+    closeAlert();
   }
 }
 
-const closeAlert = (container) => {
-  container.remove();
-  document.removeEventListener('keypress', onAlertKeydown(container))
-  container.removeEventListener('click', onWindowsClick(container));
+const onWindowsClick = (evt) => {
+  evt.preventDefault();
+  closeAlert();
+}
+
+const closeAlert = () => {
+  alertContainer.remove();
+  document.removeEventListener('keydown', onAlertKeydown);
+  alertContainer.removeEventListener('click', onWindowsClick);
 }
 
 const showAlertSuccess = () => {
   const alertSuccess = alertSuccessTemplate.cloneNode(true).content;
-  const alertContainer = document.createElement('div');
+  alertContainer.innerHTML = '';
   alertContainer.append(alertSuccess);
   main.append(alertContainer);
 
-  document.addEventListener('keydown', onAlertKeydown(alertContainer));
-  alertContainer.addEventListener('click', onWindowsClick(alertContainer));
+  document.addEventListener('keydown', onAlertKeydown);
+  alertContainer.addEventListener('click', onWindowsClick);
 }
 
 const showAlertError = () => {
-  const alertEror = alertErrorTemplate.cloneNode(true).content;
-  const alertContainer = document.createElement('div');
-  alertContainer.append(alertEror);
+  const alertError = alertErrorTemplate.cloneNode(true).content;
+  alertContainer.innerHTML = '';
+  alertContainer.append(alertError);
   main.append(alertContainer);
 
   document.addEventListener('keydown', onAlertKeydown(alertContainer));

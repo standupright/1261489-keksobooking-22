@@ -67,8 +67,8 @@ const showAlertError = () => {
   alertContainer.append(alertError);
   main.append(alertContainer);
 
-  document.addEventListener('keydown', onAlertKeydown(alertContainer));
-  alertContainer.addEventListener('click', onWindowsClick(alertContainer));
+  document.addEventListener('keydown', onAlertKeydown);
+  alertContainer.addEventListener('click', onWindowsClick);
 }
 
 export {
